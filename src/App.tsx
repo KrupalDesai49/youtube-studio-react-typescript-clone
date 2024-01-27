@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound";
 import Signup from "./pages/Signup";
 import SideBar from "./components/SideBar";
 import { useState } from "react";
-// import VideoUpload from "./pages/VideoUpload";
+import VideoUpload from "./pages/VideoUpload";
 import Content from "./pages/Content";
 function App() {
   const [open, setOpen] = useState<boolean>(false);
@@ -26,7 +26,7 @@ function App() {
                 <Route  path="/content" element={<Content />} />
                 <Route  path="/login" element={<Login />} />
                 <Route  path="/signup" element={<Signup />} />
-                {/* <Route exact path="/upload" element={<VideoUpload />} /> */}
+                <Route  path="/upload" element={<VideoUpload />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
