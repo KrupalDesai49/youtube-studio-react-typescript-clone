@@ -20,7 +20,7 @@ interface AuthContextValue {
   logIn: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
   googleSignIn: () => void;
-  user: User;
+  user?: User;
  }
  interface AuthContextProviderProps {
   children: React.ReactNode;
@@ -31,7 +31,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [user, setUser] = useState<User | null>({});
+  const [user, setUser] = useState<User | undefined>(undefined);
 
 const googleSignIn = () =>{
   const provider = new GoogleAuthProvider();
@@ -57,28 +57,32 @@ async function signUp(email: string, password: string, displayName: string): Pro
     }
   }
 
-function logIn(email: string, password: string): Promise<void> {
+async function logIn(email: string, password: string): Promise<void> {
     try {
-      return signInWithEmailAndPassword(auth, email, password).then(() => {});
+      await signInWithEmailAndPassword(auth, email, password).then(() => {});
 
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function logOut (): Promise<void> {
+    try {
+      await signOut(auth);
     } catch (error) {
       console.error(error);
       throw error;
     }
-  }
-
-  function logOut() {
-    try {
-      return signOut(auth);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+}
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      console.log("User::",currentUser)
+      if (currentUser !== null) {
+        setUser(currentUser);
+      } else {
+        setUser(undefined);
+      }
+      console.log("User::", currentUser);
     });
 
     return () => {
