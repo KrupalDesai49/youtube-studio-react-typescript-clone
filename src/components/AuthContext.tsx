@@ -22,11 +22,15 @@ interface AuthContextValue {
   googleSignIn: () => void;
   user: User;
  }
+ interface AuthContextProviderProps {
+  children: React.ReactNode;
+ }
+ 
  
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 
-export function AuthContextProvider({ children }) {
+export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<User | null>({});
 
 const googleSignIn = () =>{
@@ -34,8 +38,8 @@ const googleSignIn = () =>{
   signInWithPopup(auth,provider)
 };
 
-  async function signUp(email, password, displayName) {
-    try {
+async function signUp(email: string, password: string, displayName: string): Promise<void> {
+  try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -53,11 +57,13 @@ const googleSignIn = () =>{
     }
   }
 
-  function logIn(email, password) {
+function logIn(email: string, password: string): Promise<void> {
     try {
-      return signInWithEmailAndPassword(auth, email, password);
+      return signInWithEmailAndPassword(auth, email, password).then(() => {});
+
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
