@@ -1,19 +1,33 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../context/firebase";
+import { User } from "firebase/auth";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
   updateProfile,
-  signInWithPopup, signInWithRedirect ,GoogleAuthProvider
+  signInWithPopup, GoogleAuthProvider
 } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 
-const AuthContext = createContext();
+// const AuthContext = createContext();
+
+ 
+interface AuthContextValue {
+  signUp: (email: string, password: string, displayName: string) => Promise<void>;
+  logIn: (email: string, password: string) => Promise<void>;
+  logOut: () => Promise<void>;
+  googleSignIn: () => void;
+  user: User;
+ }
+ 
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
 
 export function AuthContextProvider({ children }) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User | null>({});
 
 const googleSignIn = () =>{
   const provider = new GoogleAuthProvider();
