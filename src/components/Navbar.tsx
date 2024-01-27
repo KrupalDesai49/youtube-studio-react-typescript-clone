@@ -7,10 +7,10 @@ import { useEffect } from "react";
 
 interface NavbarProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
- }
+}
 
-const Navbar: React.FC<NavbarProps>  = ({setOpen}) => {
-  const { user, logOut }:any = UserAuth();
+const Navbar: React.FC<NavbarProps> = ({ setOpen }) => {
+  const { user, logOut }: any = UserAuth();
   const navigate = useNavigate();
   // console.log(user)
   useParams();
@@ -26,40 +26,44 @@ const Navbar: React.FC<NavbarProps>  = ({setOpen}) => {
 
   useEffect(() => {
     const handleResize = () => {
-       if (window.innerWidth > 500) {
+      if (window.innerWidth > 500) {
         setOpen(true);
-       } else {
+      } else {
         setOpen(false);
-       }
+      }
     };
-   
-    return () => {    handleResize();    };
 
-   }, []); 
-
+    return () => {
+      handleResize();
+    };
+  }, []);
 
   return (
-    <div className={`font-roboto  sticky top-0 z-[100] flex items-center justify-between bg-[#282828] shadow-lg `}>
+    <div
+      className={`font-roboto  sticky top-0 z-[100] flex items-center justify-between bg-[#282828] shadow-lg `}
+    >
       {/* Menu */}
       <div className="mx-3 flex items-center sm:mx-5">
-
-        <div className="px-2 cursor-pointer" onClick={()=>setOpen((prevOpen) => !prevOpen)}>
-        <svg
-          width="64"
-          className="w-7 text-[#909090] hover:text-white"
-          height="64"
-          viewBox="0 0 32 32"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          className="cursor-pointer px-2"
+          onClick={() => setOpen((prevOpen) => !prevOpen)}
         >
-          <path
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 8h24M4 16h24M4 24h24"
-          />
-        </svg>
+          <svg
+            width="64"
+            className="w-7 text-[#909090] hover:text-white"
+            height="64"
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 8h24M4 16h24M4 24h24"
+            />
+          </svg>
         </div>
 
         {/* Logo */}
@@ -69,9 +73,8 @@ const Navbar: React.FC<NavbarProps>  = ({setOpen}) => {
       </div>
       {/* Search Bar */}
       <div className="mx-3 flex shrink rounded-md  bg-[#262626] text-white ring-1 ring-[#383838] sm:w-[50%] ">
-
         <svg
-          className=" mx-2 w-7 text-[#909090] sm:mx-2 hover:text-white cursor-pointer "
+          className=" mx-2 w-7 cursor-pointer text-[#909090] hover:text-white sm:mx-2 "
           viewBox="0 0 50 50"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -89,22 +92,26 @@ const Navbar: React.FC<NavbarProps>  = ({setOpen}) => {
         <input
           type="text"
           placeholder="Search"
-          className="   w-full focus:outline-none rounded-md bg-[#262626] py-[0.4rem] pl-3   placeholder:text-zinc-500"
+          className="   w-full rounded-md bg-[#262626] py-[0.4rem] pl-3 placeholder:text-zinc-500   focus:outline-none"
         ></input>
       </div>
 
       {/* Log In & Sign in */}
       {user?.email ? (
         <div className="flex shrink-0 items-center pr-3">
-          <div className=" mr-3 h-10 w-10  flex flex-col items-center justify-center">
-        {user.photoURL ? (
-          <img src={user ? user.photoURL : null} alt="" className="rounded-full" />
-        ) : (
-          <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
-            {user.displayName.charAt(0).toUpperCase()}
-          </button>
-        )}
-      </div>
+            {user.photoURL ? (          <div className=" mr-3 flex h-10  w-10 flex-col items-center justify-center">
+
+              <img
+                src={user ? user.photoURL : null}
+                alt=""
+                className="rounded-full"
+              />          </div>
+
+            ) : (
+              <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
+                {user.displayName?.charAt(0).toUpperCase()}
+              </button>
+            )}
           <button
             onClick={handleLogout}
             className="flex cursor-pointer items-center justify-center rounded-full border border-[#37a6ff] bg-[#272727] px-3 py-2 text-[#37a6ff]"

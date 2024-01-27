@@ -24,7 +24,7 @@ const SideBar = ({ open,setOpen }:any) => {
             />
           ) : (
             <button
-              className={` transition-all duration-200 ${open ? "mb-2 h-24 w-24" : "mb-0 h-8 w-8 "}  bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90`}
+              className={` transition-all rounded-full duration-200 ${open ? "mb-2 h-24 w-24 text-5xl" : "mb-0 h-8 w-8 text-xl "}  bg-[#ff0000]  font-[500] text-white hover:bg-[#ff0000]/90`}
             >
               {user?.displayName
                 ? user?.displayName?.charAt(0).toUpperCase()
