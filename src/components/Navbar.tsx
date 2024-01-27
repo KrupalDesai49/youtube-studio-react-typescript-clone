@@ -99,19 +99,19 @@ const Navbar: React.FC<NavbarProps> = ({ setOpen }) => {
       {/* Log In & Sign in */}
       {user?.email ? (
         <div className="flex shrink-0 items-center pr-3">
-            {user.photoURL ? (          <div className=" mr-3 flex h-10  w-10 flex-col items-center justify-center">
-
+          {user.photoURL ? (
+            <div className=" mr-3 flex h-10  w-10 flex-col items-center justify-center">
               <img
                 src={user ? user.photoURL : null}
                 alt=""
                 className="rounded-full"
-              />          </div>
-
-            ) : (
-              <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
-                {user.displayName?.charAt(0).toUpperCase()}
-              </button>
-            )}
+              />{" "}
+            </div>
+          ) : (
+            <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
+              {user.displayName?.charAt(0).toUpperCase()}
+            </button>
+          )}
           <button
             onClick={handleLogout}
             className="flex cursor-pointer items-center justify-center rounded-full border border-[#37a6ff] bg-[#272727] px-3 py-2 text-[#37a6ff]"

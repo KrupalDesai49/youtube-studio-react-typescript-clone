@@ -32,7 +32,7 @@ useEffect(() => {
         <div className="flex w-full flex-col-reverse items-center  justify-center py-5 md:flex-row md:items-start md:justify-start md:space-x-7">
           {/* Video Upload Container*/}
           <div className="mt-7 shrink rounded-md border border-[#3e3e3e] bg-[#282828] md:mt-0">
-            <div className="m-2 flex h-[25rem] flex-col items-center justify-center rounded-md border border-dashed border-[#3e3e3e] bg-[#282828] px-3">
+            <div className="m-2 flex h-[25rem] flex-col items-center justify-center rounded-md border border-dashed border-[#3e3e3e] bg-[#282828] lg:px-12 px-3 ">
               {/* Image */}
               <img src={content_img} alt="img" className="-mt-7 w-36" />
 
@@ -55,7 +55,7 @@ useEffect(() => {
           </div>
 
           {/* Video Details Container */}
-          <div className="flex shrink min-w-72 flex-col  justify-center rounded-md border border-[#3e3e3e] bg-[#282828] px-5 py-5">
+          <div className="flex shrink min-w-60 w-72  flex-col  justify-center rounded-md border border-[#3e3e3e] bg-[#282828] px-5 py-5">
             <p className="text-lg font-[500]"> Channel analytics</p>
 
             {/* Subscribe Text  */}
