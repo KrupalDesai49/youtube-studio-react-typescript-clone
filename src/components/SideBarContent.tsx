@@ -73,6 +73,35 @@ const SideBarContent = ({ open }:any) => {
             Content
           </p>
         </Link>
+
+        {/* Item 3 */}
+        <Link
+        to='/upload'
+          id="p3"
+          onClick={() => handleRadioChange("p3")}
+          className={`relative flex items-center border-l-4 py-3 transition-all duration-200 hover:bg-[#1f1f1f]     ${selectedStatus === "p3" ? "border-[#ff4e45] bg-[#1f1f1f]" : "border-[#282828] hover:border-[#1f1f1f]"}`}
+        >
+          <img
+            src={content}
+            alt="dashboard"
+            className={`peer ml-[1.35rem] w-7 cursor-pointer  ${selectedStatus === "p3" ? "hidden" : "block"} `}
+          />
+          <img
+            src={content_fill}
+            alt="dashboard"
+            className={`peer ml-[1.35rem] w-7 cursor-pointer ${selectedStatus === "p3" ? "block" : "hidden"}`}
+          />
+          {!open && (
+            <div className="absolute left-2 top-[4.2rem] z-10 scale-0 rounded-md bg-neutral-600 px-2 py-1 text-xs  transition-all duration-200 peer-hover:scale-95">
+              Video Upload
+            </div>
+          )}
+          <p
+            className={` cursor-pointer text-sm font-[500]  tracking-wide transition-all duration-100 ease-linear  ${selectedStatus === "p3" ? "text-[#ff4e45] " : "text-[#a6aaaa]"}  ml-5 ${open ? "scale-100" : "text-xs  opacity-0 "}`}
+          >
+            Video Upload
+          </p>
+        </Link>
       </div>
     </div>
   );
