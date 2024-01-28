@@ -5,11 +5,12 @@ import content from "../assets/content.svg";
 import content_fill from "../assets/content_fill.svg";
 import upload from "../assets/upload.svg";
 import upload_fill from "../assets/upload_fill.svg";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAtom } from "jotai";
+import { selectedStatusAtom } from "../context/atom";
 
 const SideBarContent = ({ open }:any) => {
-  const [selectedStatus, setSelectedStatus] = useState("p1");
+  const [selectedStatus, setSelectedStatus] = useAtom(selectedStatusAtom);
 
   const handleRadioChange = (event:any) => {
     setSelectedStatus(event);

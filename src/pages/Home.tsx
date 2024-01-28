@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { UserAuth } from "../components/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { selectedStatusAtom } from "../context/atom";
 
 const Home = () => {
 
   const navigate = useNavigate();
+  const [selectedStatus, setSelectedStatus] = useAtom(selectedStatusAtom);
 
 
   const { user }:any = UserAuth();
@@ -48,6 +51,7 @@ useEffect(() => {
               <Link
                 to="/upload"
                 className="mt-5 rounded-sm text-center bg-[#3ea6ff] px-4 py-2 text-sm font-[500] uppercase text-[#0d0d0d]"
+                onClick={()=>setSelectedStatus('p3')}
               >
                 Upload videos
               </Link>
