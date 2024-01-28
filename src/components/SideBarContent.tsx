@@ -3,6 +3,8 @@ import dash from "../assets/dashboard.svg";
 import dash_fill from "../assets/dashboard_fill.svg";
 import content from "../assets/content.svg";
 import content_fill from "../assets/content_fill.svg";
+import upload from "../assets/upload.svg";
+import upload_fill from "../assets/upload_fill.svg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -82,12 +84,12 @@ const SideBarContent = ({ open }:any) => {
           className={`relative flex items-center border-l-4 py-3 transition-all duration-200 hover:bg-[#1f1f1f]     ${selectedStatus === "p3" ? "border-[#ff4e45] bg-[#1f1f1f]" : "border-[#282828] hover:border-[#1f1f1f]"}`}
         >
           <img
-            src={content}
+            src={upload}
             alt="dashboard"
             className={`peer ml-[1.35rem] w-7 cursor-pointer  ${selectedStatus === "p3" ? "hidden" : "block"} `}
           />
           <img
-            src={content_fill}
+            src={upload_fill}
             alt="dashboard"
             className={`peer ml-[1.35rem] w-7 cursor-pointer ${selectedStatus === "p3" ? "block" : "hidden"}`}
           />
