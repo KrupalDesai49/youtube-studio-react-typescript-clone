@@ -9,7 +9,7 @@ import { selectedStatusAtom } from "../context/atom";
 const Home = () => {
 
   const navigate = useNavigate();
-  const [selectedStatus, setSelectedStatus] = useAtom(selectedStatusAtom);
+  const [, setSelectedStatus] = useAtom(selectedStatusAtom);
 
 
   const { user }:any = UserAuth();
