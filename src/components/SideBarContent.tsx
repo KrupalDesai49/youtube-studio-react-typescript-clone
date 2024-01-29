@@ -95,7 +95,7 @@ const SideBarContent = ({ open }:any) => {
             className={`peer ml-[1.35rem] w-7 cursor-pointer ${selectedStatus === "p3" ? "block" : "hidden"}`}
           />
           {!open && (
-            <div className="absolute left-2 top-[4.2rem] z-10 scale-0 rounded-md bg-neutral-600 px-2 py-1 text-xs  transition-all duration-200 peer-hover:scale-95">
+            <div className="absolute  text-center top-[4.2rem] z-10 scale-0 rounded-md bg-neutral-600 px-2 py-1 text-xs  transition-all duration-200 peer-hover:scale-95">
               Video Upload
             </div>
           )}

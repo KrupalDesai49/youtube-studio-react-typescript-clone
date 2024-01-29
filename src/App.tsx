@@ -10,6 +10,7 @@ import SideBar from "./components/SideBar";
 import { useState } from "react";
 import VideoUpload from "./pages/VideoUpload";
 import Content from "./pages/Content";
+import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -22,11 +23,11 @@ function App() {
             <div className="flex relative flex-1">
               <SideBar open={open} setOpen={setOpen}/>
               <Routes>
-                <Route  path="/" element={<Home />} />
-                <Route  path="/content" element={<Content />} />
+                <Route  path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                <Route  path="/content" element={<ProtectedRoute><Content /></ProtectedRoute>} />
                 <Route  path="/login" element={<Login />} />
                 <Route  path="/signup" element={<Signup />} />
-                <Route  path="/upload" element={<VideoUpload />} />
+                <Route  path="/upload" element={<ProtectedRoute><VideoUpload /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
