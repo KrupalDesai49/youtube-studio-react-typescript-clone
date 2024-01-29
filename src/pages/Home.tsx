@@ -16,13 +16,13 @@ const Home = () => {
 
 useEffect(() => {
   
-  // const handleNavigate =async () => {
-  //     if(await user==null){
-  //       console.log(user, "::",user===null)
-  // await  navigate('/signup')
-  // }
-  // }
-  // handleNavigate()
+  const handleNavigate =async () => {
+      if(await user==null){
+        console.log(user, "::",user===null)
+  await  navigate('/signup')
+  }
+  }
+  handleNavigate()
 
     setSelectedStatus('p1')
 
