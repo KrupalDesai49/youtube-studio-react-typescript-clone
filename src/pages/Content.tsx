@@ -2,7 +2,7 @@
 
 const Content = () => {
   return (
-    <div>
+    <div className="">
       
     </div>
   )
