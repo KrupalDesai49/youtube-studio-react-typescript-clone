@@ -18,7 +18,7 @@ const SideBarContent = ({ open }:any) => {
 
   return (
     <div>
-      <div className={`   flex  flex-1  flex-col text-white `}>
+      <div className={`  shrink-0 flex  flex-1  flex-col text-white `}>
         {/* Item 1 */}
         <Link 
         to='/'

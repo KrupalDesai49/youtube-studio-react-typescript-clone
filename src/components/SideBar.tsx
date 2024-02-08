@@ -1,18 +1,46 @@
 import SideBarContent from "./SideBarContent";
 import { UserAuth } from "./AuthContext";
 import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const SideBar = ({ open, setOpen }: any) => {
   const { user }: any = UserAuth();
   let Ids = useLocation();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
+  const handleResize = () =>{
+    setWindowWidth(window.innerWidth)
+    console.log(windowWidth)
+   
+  }
+
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+  if(windowWidth> 768){
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [windowWidth])
+  
 
   return (
-    // Container
+    <>
+    {/* spacing */}
+
+    <div className="sticky  bg-white/0 w-[5.1rem] md:hidden shrink-0 "></div>
+
+    {/*  Container */}
     <div
-      className={`fixed z-10 flex  h-full  shrink-0 flex-col bg-neutral-800 md:sticky  md:h-auto ${Ids.pathname == "/signup" || Ids.pathname == "/login" ? "hidden" : null} shadow-lg transition-all duration-200  ${open ? "w-64" : "w-20"} border-r  border-r-neutral-700 `}
+      className={`absolute md:sticky z-10 flex  h-full md:h-auto md:  shrink-0 flex-col bg-neutral-800 ${Ids.pathname == "/signup" || Ids.pathname == "/login" ? "hidden" : null} shadow-lg transition-all duration-200  ${open ? "w-64" : "w-20"} border-r  border-r-neutral-700 `}
     >
       <div
-        className={`md:hidden ${open ? "block" : "hidden"} absolute -z-10 h-full w-screen backdrop-blur-sm  transition-all duration-300`}
+        className={`md:hidden ${open ? "block  " : "hidden"} absolute -z-10 h-full w-screen    backdrop-blur-sm  transition-all duration-300`}
         onClick={() => {
           setOpen(false);
         }}
@@ -50,6 +78,7 @@ const SideBar = ({ open, setOpen }: any) => {
 
       <SideBarContent open={open} />
     </div>
+    </>
   );
 };
 

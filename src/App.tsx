@@ -18,7 +18,7 @@ function App() {
     <>
       <AuthContextProvider>
         <Router>
-          <div className=" flex min-h-screen flex-col text-white font-roboto bg-[#1f1f1f]">
+          <div className="relative flex min-h-screen flex-col text-white font-roboto bg-[#1f1f1f]">
             <Navbar setOpen={setOpen} />
             <div className="flex relative flex-1">
               <SideBar open={open} setOpen={setOpen}/>

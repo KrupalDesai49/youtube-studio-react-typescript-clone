@@ -32,7 +32,7 @@ useEffect(() => {
 
   return (
     // Main Container
-    <div className="w-full ml-20 md:ml-0">
+    <div className="w-full ">
       {/* Container */}
       <div className=" mx-5 mt-5 flex flex-col">
         {/* Heading */}

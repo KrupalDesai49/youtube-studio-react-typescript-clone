@@ -24,19 +24,19 @@ const Navbar: React.FC<NavbarProps> = ({ setOpen }) => {
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 500) {
-        setOpen(true);
-      } else {
-        setOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (window.innerWidth > 500) {
+  //       setOpen(true);
+  //     } else {
+  //       setOpen(false);
+  //     }
+  //   };
 
-    return () => {
-      handleResize();
-    };
-  }, []);
+  //   return () => {
+  //     handleResize();
+  //   };
+  // }, []);
 
   return (
     <div
