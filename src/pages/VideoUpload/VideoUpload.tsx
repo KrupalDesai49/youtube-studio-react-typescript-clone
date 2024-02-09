@@ -12,8 +12,8 @@ type VideoUploadProp = {
 
 const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
   const YOUTUBE_API_KEY = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY; // Replace with your actual API key
-
   const navigate = useNavigate();
+
   // Regular expression to match YouTube URLs
   const youTubeURLRegex =
     /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^#&?]*).*/;
@@ -22,27 +22,12 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
     /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/shorts\/(.+)/;
 
   const [inputURL, setInputURL] = useState("");
-  const [validText, setValidText] = useState("");
-  const [linkType, setLinkType] = useState<"standard" | "shorts" | "invalid">("invalid");
+  const [linkType, setLinkType] = useState<"standard" | "shorts" | "invalid">(
+    "invalid",
+  );
   const [linkId, setLinkId] = useState("");
 
-  useEffect(() => {
-    if (inputURL === "") {
-      setValidText("<pre> </pre>");
-    } else if (linkType === "standard") {
-      setValidText(
-        'This is a Standard <span style={{ color: "#ff0000" }}>YouTube Video</span> link.',
-      );
-    } else if (linkType === "shorts") {
-      setValidText(
-        'This is a Standard <span className="text-[#ff0000]">YouTube Shorts</span> link.',
-      );
-    } else if (linkType === "invalid") {
-      setValidText("This is not a valid YouTube link.");
-    }
-  }, [inputURL]);
-
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = () => {
     const getId = extractYouTubeVideoId(inputURL);
     if (getId !== null) {
       // setCanNavigate(true);
@@ -64,7 +49,7 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
       setLinkType("invalid");
 
       // Prevent navigation if checkFunction returns false
-      event.preventDefault();
+      // event.preventDefault();
     }
   };
 
@@ -166,14 +151,28 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
                 className="w-full appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
               />
             </div>
-            <p dangerouslySetInnerHTML={{ __html: validText }} />
-            {/* {linkType === 'standard' && <p>This is a standard YouTube video link.</p>}
-      {linkType === 'shorts' && <p>This is a YouTube Shorts link.</p>}
-      {linkType === 'invalid' && <p>This is not a valid YouTube link.</p>} */}
+            {/* Link Validated Text*/}
+            <div className="mt-1">
+              {linkType === "standard" && inputURL !== "" && (
+                <p className="font-[500]">
+                  This is a Standard{" "}
+                  <span className="text-[#ff0000] ">YouTube Video</span> link.
+                </p>
+              )}
+              {linkType === "shorts" && inputURL !== "" && (
+                <p className="font-[500]">
+                  This is a Standard{" "}
+                  <span className="text-[#ff0000] ">YouTube Short</span> link.
+                </p>
+              )}
+              {linkType === "invalid" && inputURL !== "" && (
+                <p className="font-[500]">This is not a valid YouTube link.</p>
+              )}
+            </div>
           </div>
 
           {/* Next Page Button Container */}
-          <div className=" group mt-14 cursor-pointer">
+          <div className=" group mt-14 w-fit cursor-pointer">
             <div
               onClick={handleClick}
               className="flex w-fit items-center rounded-md bg-[#ff0000] px-6 py-2 text-lg font-semibold"
@@ -181,7 +180,7 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
               <span>
                 {selectedType === "Video"
                   ? "Next Page"
-                  : "Upload Youtube Short"}{" "}
+                  : "Upload Youtube Short"}
               </span>
               <svg
                 className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"
