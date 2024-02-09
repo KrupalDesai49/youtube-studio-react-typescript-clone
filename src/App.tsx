@@ -50,20 +50,20 @@ function App() {
                 <Route
                   path="/upload"
                   element={
-                    <ProtectedRoute>
+                    // <ProtectedRoute>
                       <VideoUpload
                         selectedType={selectedType}
                         handleTypeChange={handleTypeChange}
                       />
-                    </ProtectedRoute>
+                    // </ProtectedRoute>
                   }
                 />
                 <Route
                   path="/upload/details"
                   element={
-                    <ProtectedRoute>
+                    // <ProtectedRoute>
                       <VideoUploadDetails selectedType={selectedType} />
-                    </ProtectedRoute>
+                    // </ProtectedRoute>
                   }
                 />
                 <Route path="*" element={<NotFound />} />
