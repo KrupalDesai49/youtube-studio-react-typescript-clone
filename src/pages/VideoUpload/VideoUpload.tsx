@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from "axios";
-import { useState ,} from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate  } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 type SelectedType = "Video" | "Short";
 
@@ -12,91 +11,104 @@ type VideoUploadProp = {
 };
 
 const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
+  const YOUTUBE_API_KEY = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY; // Replace with your actual API key
+
+  const navigate = useNavigate();
+  // Regular expression to match YouTube URLs
+  const youTubeURLRegex =
+    /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^#&?]*).*/;
+  // Regular expression to match YouTube Shorts URLs
+  const shortYouTubeURLRegex =
+    /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/shorts\/(.+)/;
+
   const [inputURL, setInputURL] = useState("");
-  // const [isValid, setIsValid] = useState(false);
+  const [validText, setValidText] = useState("");
+  const [linkType, setLinkType] = useState<"standard" | "shorts" | "invalid">("invalid");
+  const [linkId, setLinkId] = useState("");
 
-  // // Regular expression to match YouTube URLs
-  // const youTubeURLRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^#&?]*).*/;
-
-  // // const youTubeURLRegex =
-  //   // /^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+/;
-  // const shortYouTubeURLRegex = /^(http(s)?:\/\/)?youtu.be\/.+/;
-
-  // // Function to validate YouTube URL
-  // const isValidYouTubeURL = (url: string): boolean => {
-  //   if (youTubeURLRegex.test(url)) {
-  //     console.log("Valid YouTubeURL");
-  //   }
-  //   if (shortYouTubeURLRegex.test(url)) {
-  //     console.log("Valid shortYouTubeURL");
-  //   }
-
-  //   return youTubeURLRegex.test(url) || shortYouTubeURLRegex.test(url);
-  // };
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setInputURL(event.target.value);
-  //   setIsValid(isValidYouTubeURL(event.target.value));
-  // };
-  const navigate = useNavigate ();
-  const [canNavigate, setCanNavigate] = useState(false);
-  const [linkId, setLinkId] = useState('');
+  useEffect(() => {
+    if (inputURL === "") {
+      setValidText("<pre> </pre>");
+    } else if (linkType === "standard") {
+      setValidText(
+        'This is a Standard <span style={{ color: "#ff0000" }}>YouTube Video</span> link.',
+      );
+    } else if (linkType === "shorts") {
+      setValidText(
+        'This is a Standard <span className="text-[#ff0000]">YouTube Shorts</span> link.',
+      );
+    } else if (linkType === "invalid") {
+      setValidText("This is not a valid YouTube link.");
+    }
+  }, [inputURL]);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const getId =extractYouTubeVideoId(inputURL)
-    if (getId!== null) {
-      setCanNavigate(true);
-      navigate('/upload/details');
-setLinkId(getId)
-      isYouTubeShort(getId)
-  .then(({ isShort }) => {
-    if (isShort) {
-      console.log('The YouTube video is a Shorts video.');
+    const getId = extractYouTubeVideoId(inputURL);
+    if (getId !== null) {
+      // setCanNavigate(true);
+      setLinkId(getId);
+      // setLinkType(identifyYouTubeLinkType(inputURL));
+
+      isValidYouTubeVideoId(getId)
+        .then((isValid) => {
+          if (isValid) {
+            console.log("The YouTube video ID is valid.");
+            navigate("/upload/details");
+          } else {
+            setLinkType("invalid");
+            console.log("The YouTube video ID is not valid or does not exist.");
+          }
+        })
+        .catch(console.error);
     } else {
-      console.log('The YouTube video is not a Shorts video.');
-    }
-  })
-  .catch(console.error);
-    } else {
+      setLinkType("invalid");
+
       // Prevent navigation if checkFunction returns false
       event.preventDefault();
     }
   };
 
   function extractYouTubeVideoId(url: string): string | null {
-    const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+    const regExp =
+      /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
     const match = url.match(regExp);
-    console.log(match && match[1].length ===  11 ? match[1] : null)
-    return match && match[1].length ===  11 ? match[1] : null;
+    console.log(match && match[1].length === 11 ? match[1] : null);
+    return match && match[1].length === 11 ? match[1] : null;
   }
-  
-  interface YouTubeShortCheckResult {
-    isShort: boolean;
-  }
-  
-  async function isYouTubeShort(videoId: string): Promise<YouTubeShortCheckResult> {
+
+  async function isValidYouTubeVideoId(videoId: string): Promise<boolean> {
     try {
-      const response: AxiosResponse = await axios.get(`https://www.youtube.com/shorts/${videoId}`);
-      return { isShort: response.status ===  200 };
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=id&id=${videoId}&key=${YOUTUBE_API_KEY}`,
+      );
+      const data = await response.json();
+
+      // Check if the video exists by looking at the items array length
+      return data.items.length > 0;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        // This error is an AxiosError
-        if (error.response && error.response.status ===  303) {
-          // This means it's not a Shorts video
-          return { isShort: false };
-        }
-      } else if (error instanceof Error) {
-        // This error is a generic Error
-        console.error(error.message);
-      } else {
-        // Unknown error, log it to see what it contains
-        console.error(error);
-      }
-      // Throw the error if it's not handled above
-      throw error;
+      console.error("Error fetching YouTube video details:", error);
+      return false;
     }
   }
-  
+
+  const identifyYouTubeLinkType = (
+    url: string,
+  ): "standard" | "shorts" | "invalid" => {
+    if (youTubeURLRegex.test(url)) {
+      if (shortYouTubeURLRegex.test(url)) {
+        return "shorts";
+      } else {
+        return "standard";
+      }
+    }
+    return "invalid";
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setInputURL(newValue);
+    setLinkType(identifyYouTubeLinkType(newValue));
+  };
 
   return (
     <>
@@ -116,13 +128,19 @@ setLinkId(getId)
             <div className="flex space-x-5 pt-3">
               {/* VIdeo Type */}
               <button
-                onClick={() => handleTypeChange("Video")}
+                onClick={() => {
+                  handleTypeChange("Video");
+                  setInputURL("");
+                }}
                 className={`rounded-md px-5 py-2 text-lg font-semibold ${selectedType === "Video" ? "bg-[#ff0000]" : " bg-neutral-600"}`}
               >
                 Youtube Video
               </button>
               <button
-                onClick={() => handleTypeChange("Short")}
+                onClick={() => {
+                  handleTypeChange("Short");
+                  setInputURL("");
+                }}
                 className={`rounded-md px-5 py-2 text-lg font-semibold ${selectedType === "Short" ? "bg-[#ff0000]" : " bg-neutral-600"}`}
               >
                 Youtube Short
@@ -143,24 +161,28 @@ setLinkId(getId)
               <input
                 type="text"
                 value={inputURL}
-                onChange={e=>setInputURL(e.target.value)}
-                // onChange={handleChange}
-                
+                onChange={handleInputChange}
                 placeholder={`Add Youtube ${selectedType === "Video" ? "Video" : "Short"} Link Here`}
                 className="w-full appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
               />
             </div>
+            <p dangerouslySetInnerHTML={{ __html: validText }} />
+            {/* {linkType === 'standard' && <p>This is a standard YouTube video link.</p>}
+      {linkType === 'shorts' && <p>This is a YouTube Shorts link.</p>}
+      {linkType === 'invalid' && <p>This is not a valid YouTube link.</p>} */}
           </div>
 
           {/* Next Page Button Container */}
-          <div className=" group pt-14"
-          >
-             <div
-        // href="/upload/details"
-        onClick={handleClick}
+          <div className=" group mt-14 cursor-pointer">
+            <div
+              onClick={handleClick}
               className="flex w-fit items-center rounded-md bg-[#ff0000] px-6 py-2 text-lg font-semibold"
             >
-              <span>Next </span>
+              <span>
+                {selectedType === "Video"
+                  ? "Next Page"
+                  : "Upload Youtube Short"}{" "}
+              </span>
               <svg
                 className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"
                 viewBox="0 0 448 512"
@@ -173,7 +195,6 @@ setLinkId(getId)
               </svg>
             </div>
           </div>
-       
         </div>
       </div>
     </>

@@ -28,7 +28,7 @@ interface VideoDetails {
 
 const Content = () => {
   const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null);
-  const videoId = 'ADP-3_xbr40'; // Replace with the actual video ID
+  const videoId = 'lCx9hBR5kTs'; // Replace with the actual video ID
   const apiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY; // Replace with your actual API key
 
   useEffect(() => {
