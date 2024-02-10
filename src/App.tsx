@@ -15,10 +15,16 @@ import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 function App() {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedType, setSelectedType] = useState<"Video" | "Short">("Video");
+  const [linkId, setLinkId] = useState("");
+
 
   const handleTypeChange = (type: "Video" | "Short") => {
     setSelectedType(type);
   };
+
+  const handleUploadVideoId = (id: string)=>{
+    setLinkId(id)
+  }
 
   return (
     <>
@@ -54,6 +60,7 @@ function App() {
                       <VideoUpload
                         selectedType={selectedType}
                         handleTypeChange={handleTypeChange}
+                        handleUploadVideoId={handleUploadVideoId}
                       />
                     // </ProtectedRoute>
                   }
@@ -62,7 +69,7 @@ function App() {
                   path="/upload/details"
                   element={
                     // <ProtectedRoute>
-                      <VideoUploadDetails selectedType={selectedType} />
+                      <VideoUploadDetails selectedType={selectedType} linkId={linkId} />
                     // </ProtectedRoute>
                   }
                 />

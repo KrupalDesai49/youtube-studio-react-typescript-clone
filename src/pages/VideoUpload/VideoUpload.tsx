@@ -1,6 +1,4 @@
-import axios, { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 type SelectedType = "Video" | "Short";
@@ -8,10 +6,12 @@ type SelectedType = "Video" | "Short";
 type VideoUploadProp = {
   selectedType: SelectedType;
   handleTypeChange: (type: SelectedType) => void;
+  handleUploadVideoId: (id:string)=>void
 };
 
-const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
-  const YOUTUBE_API_KEY = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY; // Replace with your actual API key
+const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: VideoUploadProp) => {
+  
+  const YOUTUBE_API_KEY = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY; 
   const navigate = useNavigate();
 
   // Regular expression to match YouTube URLs
@@ -25,13 +25,12 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
   const [linkType, setLinkType] = useState<"standard" | "shorts" | "invalid">(
     "invalid",
   );
-  const [linkId, setLinkId] = useState("");
 
   const handleClick = () => {
     const getId = extractYouTubeVideoId(inputURL);
     if (getId !== null) {
       // setCanNavigate(true);
-      setLinkId(getId);
+      handleUploadVideoId(getId);
       // setLinkType(identifyYouTubeLinkType(inputURL));
 
       isValidYouTubeVideoId(getId)

@@ -22,13 +22,15 @@ interface VideoDetails {
     default: { url: string };
     medium: { url: string };
     high: { url: string };
+    standard: { url: string };
   };
   duration: string;
 }
 
 const Content = () => {
   const [videoDetails, setVideoDetails] = useState<VideoDetails | null>(null);
-  const videoId = 'lCx9hBR5kTs'; // Replace with the actual video ID
+  // const videoId = 'lCx9hBR5kTs'; // Replace with the actual video ID
+  const videoId = 'oKIThIihv60'; // Replace with the actual video ID
   const apiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY; // Replace with your actual API key
 
   useEffect(() => {
@@ -65,7 +67,9 @@ const Content = () => {
       {videoDetails ? (
         <div >
         thumbnails
-          <img src={videoDetails.thumbnails.high.url} className='shrink' alt={videoDetails.title} />
+        <div className=' '>
+          <img src={videoDetails.thumbnails.high.url}  className="aspect-video object-cover " alt={videoDetails.title} />
+          </div>
           title
           <h2>{videoDetails.title}</h2>
           description
