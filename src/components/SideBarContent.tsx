@@ -5,6 +5,8 @@ import content from "../assets/content.svg";
 import content_fill from "../assets/content_fill.svg";
 import upload from "../assets/upload.svg";
 import upload_fill from "../assets/upload_fill.svg";
+import profile from "../assets/profile.svg";
+import profile_fill from "../assets/profile_fill.svg";
 import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { selectedStatusAtom } from "../context/atom";
@@ -103,6 +105,35 @@ const SideBarContent = ({ open }:any) => {
             className={` cursor-pointer text-sm font-[500]  tracking-wide transition-all duration-100 ease-linear  ${selectedStatus === "p3" ? "text-[#ff4e45] " : "text-[#a6aaaa]"}  ml-5 ${open ? "scale-100" : "text-xs  opacity-0 "}`}
           >
             Video Upload
+          </p>
+        </Link>
+
+        {/* Item 4 */}
+        <Link
+        to='/profile'
+          id="p4"
+          onClick={() => handleRadioChange("p4")}
+          className={`relative flex items-center border-l-4 py-3 transition-all duration-200 hover:bg-[#1f1f1f]     ${selectedStatus === "p4" ? "border-[#ff4e45] bg-[#1f1f1f]" : "border-[#282828] hover:border-[#1f1f1f]"}`}
+        >
+          <img
+            src={profile}
+            alt="dashboard"
+            className={`peer ml-[1.35rem] w-7 cursor-pointer r p-[0.2rem] ${selectedStatus === "p4" ? "hidden" : "block"} `}
+          />
+          <img
+            src={profile_fill}
+            alt="dashboard"
+            className={`peer ml-[1.35rem] w-7 cursor-pointer p-[0.2rem] ${selectedStatus === "p4" ? "block" : "hidden"}`}
+          />
+          {!open && (
+            <div className="absolute  text-center top-[4.2rem] z-10 scale-0 rounded-md bg-neutral-600 px-2 py-1 text-xs  transition-all duration-200 peer-hover:scale-95">
+              User Profile
+            </div>
+          )}
+          <p
+            className={` cursor-pointer text-sm font-[500]  tracking-wide transition-all duration-100 ease-linear  ${selectedStatus === "p4" ? "text-[#ff4e45] " : "text-[#a6aaaa]"}  ml-5 ${open ? "scale-100" : "text-xs  opacity-0 "}`}
+          >
+            User Profile
           </p>
         </Link>
       </div>

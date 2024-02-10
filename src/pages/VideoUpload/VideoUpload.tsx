@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import arrow from "../../assets/right_arrow.svg"
+import { useAtom } from "jotai";
+import { selectedStatusAtom } from "../../context/atom";
+
 
 type SelectedType = "Video" | "Short";
 
@@ -8,6 +13,7 @@ type VideoUploadProp = {
   handleTypeChange: (type: SelectedType) => void;
   handleUploadVideoId: (id:string)=>void
 };
+
 
 const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: VideoUploadProp) => {
   
@@ -25,6 +31,13 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
   const [linkType, setLinkType] = useState<"standard" | "shorts" | "invalid">(
     "invalid",
   );
+
+  const [, setSelectedStatus] = useAtom(selectedStatusAtom);
+
+  useEffect(() => {
+    setSelectedStatus('p3')
+  }, [])
+  
 
   const handleClick = () => {
     const getId = extractYouTubeVideoId(inputURL);
@@ -113,7 +126,7 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
         <div className="flex w-full flex-col pt-20 ">
           {/* Video Type Container */}
           <div className="flex flex-col">
-            <p className="text-xl font-[500]">Video Type</p>
+            <p className="text-lg font-[500]">Video Type</p>
 
             {/* 2 Types*/}
             <div className="flex space-x-5 pt-3">
@@ -123,7 +136,7 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
                   handleTypeChange("Video");
                   setInputURL("");
                 }}
-                className={`rounded-md px-5 py-2 text-lg font-semibold ${selectedType === "Video" ? "bg-[#ff0000]" : " bg-neutral-600"}`}
+                className={`rounded-md px-5 py-2  font-semibold ${selectedType === "Video" ? "bg-[#ff0000]" : " bg-neutral-600"}`}
               >
                 Youtube Video
               </button>
@@ -132,7 +145,7 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
                   handleTypeChange("Short");
                   setInputURL("");
                 }}
-                className={`rounded-md px-5 py-2 text-lg font-semibold ${selectedType === "Short" ? "bg-[#ff0000]" : " bg-neutral-600"}`}
+                className={`rounded-md px-5 py-2  font-semibold ${selectedType === "Short" ? "bg-[#ff0000]" : " bg-neutral-600"}`}
               >
                 Youtube Short
               </button>
@@ -143,7 +156,7 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
 
           {/* Video Link Container */}
           <div className="flex flex-col pt-14">
-            <p className="text-xl font-[500]">
+            <p className="text-lg font-[500]">
               Youtube {selectedType === "Video" ? "Video" : "Short"} Link
             </p>
 
@@ -184,23 +197,14 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
           <div className=" group mt-14 w-fit cursor-pointer">
             <div
               onClick={handleClick}
-              className="flex w-fit items-center rounded-md bg-[#ff0000] px-6 py-2 text-lg font-semibold"
+              className="flex w-fit items-center rounded-md bg-[#ff0000] px-6 py-2  font-semibold"
             >
               <span>
                 {selectedType === "Video"
                   ? "Next Page"
                   : "Upload Youtube Short"}
               </span>
-              <svg
-                className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"
-                viewBox="0 0 448 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill="currentColor"
-                  d="m190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3"
-                />
-              </svg>
+              <img src={arrow} alt=""  className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"/>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import VideoUpload from "./pages/VideoUpload/VideoUpload";
 import Content from "./pages/Content";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
+import UserProfile from "./pages/UserProfile/UserProfile";
 function App() {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedType, setSelectedType] = useState<"Video" | "Short">("Video");
@@ -70,6 +71,14 @@ function App() {
                   element={
                     // <ProtectedRoute>
                       <VideoUploadDetails  linkId={linkId} />
+                    // </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    // <ProtectedRoute>
+                      <UserProfile   />
                     // </ProtectedRoute>
                   }
                 />
