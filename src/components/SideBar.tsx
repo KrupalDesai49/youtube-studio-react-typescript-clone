@@ -33,11 +33,11 @@ const SideBar = ({ open, setOpen }: any) => {
     <>
     {/* spacing */}
 
-    <div className="sticky  bg-white/0 w-[5.1rem] md:hidden shrink-0 "></div>
+    <div className="sticky  bg-white/0 w-[5.1rem] md:hidden shrink-0  "></div>
 
     {/*  Container */}
     <div
-      className={`absolute md:sticky z-10 flex  h-full md:h-auto md:  shrink-0 flex-col bg-neutral-800 ${Ids.pathname == "/signup" || Ids.pathname == "/login" ? "hidden" : null} shadow-lg transition-all duration-200  ${open ? "w-64" : "w-20"} border-r  border-r-neutral-700 `}
+      className={`absolute overflow-y-scroll no-scrollbar md:sticky z-10 flex  h-full md:h-auto md:  shrink-0 flex-col bg-neutral-800 ${Ids.pathname == "/signup" || Ids.pathname == "/login" ? "hidden" : null} shadow-lg transition-all duration-200  ${open ? "w-64" : "w-20"} border-r  border-r-neutral-700 `}
     >
       <div
         className={`md:hidden ${open ? "block  " : "hidden"} absolute -z-10 h-full w-screen    backdrop-blur-sm  transition-all duration-300`}

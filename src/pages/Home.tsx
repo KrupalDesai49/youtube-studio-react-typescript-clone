@@ -32,7 +32,7 @@ useEffect(() => {
 
   return (
     // Main Container
-    <div className="w-full ">
+    <div className="w-full overflow-scroll no-scrollbar">
       {/* Container */}
       <div className=" mx-5 mt-5 flex flex-col">
         {/* Heading */}
