@@ -37,8 +37,15 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
       isValidYouTubeVideoId(getId)
         .then((isValid) => {
           if (isValid) {
-            console.log("The YouTube video ID is valid.");
-            navigate("/upload/details");
+            if (selectedType === "Video") {
+              console.log("The YouTube video ID is valid.");
+              navigate("/upload/details");
+            } else if (selectedType === "Short") {
+              console.log("The YouTube Short ID is valid.");
+              ///// TODO - to Store Data in Firebase 
+              // navigate("/");
+
+            }
           } else {
             setLinkType("invalid");
             console.log("The YouTube video ID is not valid or does not exist.");
@@ -97,7 +104,7 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
 
   return (
     <>
-      <div className="mx-6 my-6 flex w-full  flex-col overflow-y-scroll">
+      <div className="no-scrollbar flex w-full flex-col  overflow-y-scroll px-6 py-6">
         {/* Page Name */}
         <div className="text-2xl font-semibold ">
           {selectedType === "Video" ? "Video" : "Short"} Upload
@@ -153,20 +160,23 @@ const VideoUpload = ({ selectedType, handleTypeChange }: VideoUploadProp) => {
             </div>
             {/* Link Validated Text*/}
             <div className="mt-1">
+              {inputURL === "" && <pre className="font-[500]"> </pre>}
               {linkType === "standard" && inputURL !== "" && (
-                <p className="font-[500]">
+                <p className="font-semibold">
                   This is a Standard{" "}
                   <span className="text-[#ff0000] ">YouTube Video</span> link.
                 </p>
               )}
               {linkType === "shorts" && inputURL !== "" && (
-                <p className="font-[500]">
+                <p className="font-semibold">
                   This is a Standard{" "}
                   <span className="text-[#ff0000] ">YouTube Short</span> link.
                 </p>
               )}
               {linkType === "invalid" && inputURL !== "" && (
-                <p className="font-[500]">This is not a valid YouTube link.</p>
+                <p className="font-semibold">
+                  This is not a valid YouTube link.
+                </p>
               )}
             </div>
           </div>
