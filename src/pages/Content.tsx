@@ -68,7 +68,7 @@ const Content = () => {
         <div >
         thumbnails
         <div className=' '>
-          <img src={videoDetails.thumbnails.high.url}  className="aspect-video object-cover " alt={videoDetails.title} />
+          <img src={videoDetails.thumbnails.standard.url}  className="= " alt={videoDetails.title} />cover
           </div>
           title
           <h2>{videoDetails.title}</h2>

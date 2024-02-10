@@ -15,7 +15,7 @@ import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 function App() {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedType, setSelectedType] = useState<"Video" | "Short">("Video");
-  const [linkId, setLinkId] = useState("");
+  const [linkId, setLinkId] = useState("pwsjvnADNGk");
 
 
   const handleTypeChange = (type: "Video" | "Short") => {
@@ -69,7 +69,7 @@ function App() {
                   path="/upload/details"
                   element={
                     // <ProtectedRoute>
-                      <VideoUploadDetails selectedType={selectedType} linkId={linkId} />
+                      <VideoUploadDetails  linkId={linkId} />
                     // </ProtectedRoute>
                   }
                 />
