@@ -4,11 +4,12 @@ type LinkUploadDialogBoxProp = {
     buttonName:string
     linkOf:string
     setLink:(link:string)=>void
+    handleLink:(link:string) =>Promise<boolean>
     link:string
 }
 
 
-const LinkUploadDialogBox = ({buttonName, linkOf, setLink, link }:LinkUploadDialogBoxProp) => {
+const LinkUploadDialogBox = ({buttonName, linkOf, setLink, link,handleLink }:LinkUploadDialogBoxProp) => {
   return (
     <div>
        <Dialog.Root >
@@ -54,7 +55,7 @@ const LinkUploadDialogBox = ({buttonName, linkOf, setLink, link }:LinkUploadDial
                             </Button>
                           </Dialog.Close>
                           <Dialog.Close>
-                            <Button className="text-[#3ea6ff] cursor-pointer">Update</Button>
+                            <button className="text-[#3ea6ff] cursor-pointer" onClick={ ()=> {handleLink(link)}} >Update</button>
                           </Dialog.Close>
                         </Flex>
                       </Dialog.Content>

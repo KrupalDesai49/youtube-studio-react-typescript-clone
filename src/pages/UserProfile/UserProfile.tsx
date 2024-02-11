@@ -81,13 +81,30 @@ const UserProfile = () => {
     handleData();
   }, [isDataAvailable, channelName, channelDescription]);
 
-  // const toggleLogoDialogBox = () => {
-  //   setIsLogoDialogBoxOpen((e) => !e);
-  // };
+  
+  const handleLink = async (link: string) => {
+    try {
+      const response = await fetch(link, { method: 'HEAD' });
+      const contentType = response.headers.get('Content-Type');
+      const imageExtensions = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml','image/bmp','image/ico','image/tiff','image/apng','image/avif'];
+  
+      // Check if Content-Type is one of the accepted image types
+      const isImage = contentType && imageExtensions.includes(contentType);
+      // console.log("Validation result:yesssssss:: ", isImage);
+      return isImage;
+    } catch (error) {
+      console.error('Failed to validate image URL:::', error);
+      // console.log("Nooooooooo::")
 
-  // const toggleBanneroDialogBox = () => {
-  //   setIsBannerDialogBoxOpen((e) => !e);
-  // };
+      return false;
+    }
+  };
+  
+
+  
+
+ 
+
 
   return (
     <>
@@ -187,7 +204,7 @@ const UserProfile = () => {
                 <div className="flex space-x-5">
                   {/* LOGO Change Button */}
                   <div className="">
-                    <LinkUploadDialogBox buttonName="Change" linkOf="Logo" link={logoLink} setLink={setLogoLink} />
+                    <LinkUploadDialogBox buttonName="Change" linkOf="Logo" link={logoLink} setLink={setLogoLink} handleLink={handleLink} />
                    
                   </div>
                   {/* LOGO Remove Button */}
