@@ -5,10 +5,7 @@ import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../context/firebase";
-import useModel from "../../components/useModel";
-import Model from "../../components/Model";
-import { Flex, Text, Button, TextField, Dialog } from "@radix-ui/themes";
-// import * as Dialog from '@radix-ui/react-dialog';
+import LinkUploadDialogBox from "./LinkUploadDialogBox";
 
 type UserDataType = {
   id: string;
@@ -190,54 +187,8 @@ const UserProfile = () => {
                 <div className="flex space-x-5">
                   {/* LOGO Change Button */}
                   <div className="">
-                    <Dialog.Root >
-                      <Dialog.Trigger>
-                        <button className=" cursor-pointer rounded-md text-sm font-semibold  text-[#3ea6ff]">
-                          Change
-                        </button>
-                      </Dialog.Trigger>
-
-                      <Dialog.Content
-                        style={{ maxWidth: 450 }}
-                        className="bg-[#262626] "
-                      >
-                        <Dialog.Title weight="medium" className="text-white">
-                          Update Channel Logo
-                        </Dialog.Title>
-
-                        <Flex direction="column" gap="3">
-                          <label>
-                            <Text
-                              as="div"
-                              size="2"
-                              mb="1"
-                              weight="medium"
-                              className="text-white"
-                            >
-                              Photo URL
-                            </Text>
-                            <TextField.Input
-                              className="border border-[#606060] bg-[#262626] text-white  placeholder:text-[#717171]  hover:border-[#909090] focus:border-[#3ea6ff] "
-                              // defaultValue="Freja Johnsen"
-                              placeholder="Enter Here Logo's URL"
-                              value={logoLink}
-                              onChange={(e) => setLogoLink(e.target.value)}
-                            />
-                          </label>
-                        </Flex>
-
-                        <Flex gap="0" mt="4" justify="end">
-                          <Dialog.Close>
-                            <Button variant="soft" className="text-white">
-                              Cancel
-                            </Button>
-                          </Dialog.Close>
-                          <Dialog.Close>
-                            <Button className="text-[#  ]">Update</Button>
-                          </Dialog.Close>
-                        </Flex>
-                      </Dialog.Content>
-                    </Dialog.Root>
+                    <LinkUploadDialogBox buttonName="Change" linkOf="Logo" link={logoLink} setLink={setLogoLink} />
+                   
                   </div>
                   {/* LOGO Remove Button */}
                   <button className=" cursor-pointer rounded-md text-sm font-semibold  text-[#3ea6ff]">
@@ -268,9 +219,8 @@ const UserProfile = () => {
                   least 2048 x 1152 pixels and 6MB or less.
                 </p>
                 <div className="flex space-x-5">
-                  <button className=" rounded-md text-sm font-semibold text-[#3ea6ff]  ">
-                    Upload
-                  </button>
+                <LinkUploadDialogBox buttonName="Upload" linkOf="Banner" link={bannerLink} setLink={setBannerLink} />
+
                   <button className=" rounded-md text-sm font-semibold text-[#3ea6ff]  ">
                     Remove
                   </button>
