@@ -10,9 +10,9 @@ import LinkUploadDialogBox from "./LinkUploadDialogBox";
 type UserDataType = {
   id: string;
   displayName: string;
-  description: null | string;
-  logo_link: null | string;
-  banner_link: null | string;
+  description:  string;
+  logo_link:  string;
+  banner_link: string;
   channelID: string;
   tick: boolean;
   subscribers: number;
@@ -70,7 +70,9 @@ const UserProfile = () => {
       if (userData?.displayName) {
         const isUpdated =
           userData?.displayName !== channelName ||
-          userData?.description !== channelDescription;
+          userData?.description !== channelDescription ||
+          userData?.logo_link !== logoLink ||
+          userData?.banner_link !== bannerLink
 
         console.log(isUpdated);
         if (isUpdated) return setIsDataUpdated(true);
@@ -79,7 +81,7 @@ const UserProfile = () => {
       }
     };
     handleData();
-  }, [isDataAvailable, channelName, channelDescription]);
+  }, [isDataAvailable, channelName, channelDescription,logoLink,bannerLink]);
 
   
   const handleLink = async (link: string) => {
@@ -108,9 +110,9 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="no-scrollbar flex w-full flex-col  overflow-y-scroll px-6 py-6">
+      <div className="no-scrollbar flex w-full flex-col  overflow-y-scroll px-6 py-6  ">
         {/* Page Head Line */}
-        <div className="flex flex-col justify-between md:flex-row">
+        <div className="flex flex-col justify-between md:flex-row sticky flex-1  w-full">
           {/* Page Name */}
           <div className="text-2xl font-semibold ">Channel Customization</div>
 
@@ -201,14 +203,14 @@ const UserProfile = () => {
                   Make sure your picture follows the YouTube Community
                   Guidelines.
                 </p>
-                <div className="flex space-x-5">
+                <div className="flex space-x-5 ">
                   {/* LOGO Change Button */}
                   <div className="">
                     <LinkUploadDialogBox buttonName="Change" linkOf="Logo" link={logoLink} setLink={setLogoLink} handleLink={handleLink} />
                    
                   </div>
                   {/* LOGO Remove Button */}
-                  <button className=" cursor-pointer rounded-md text-sm font-semibold  text-[#3ea6ff]">
+                  <button className=" cursor-pointer rounded-md text-sm font-semibold mt-[0.1rem]  text-[#3ea6ff]">
                     Remove
                   </button>
                 </div>

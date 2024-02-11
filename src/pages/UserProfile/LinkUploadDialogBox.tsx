@@ -14,7 +14,7 @@ const LinkUploadDialogBox = ({buttonName, linkOf, setLink, link,handleLink }:Lin
     <div>
        <Dialog.Root >
                       <Dialog.Trigger>
-                        <button className=" cursor-pointer rounded-md text-sm font-semibold  text-[#3ea6ff]">
+                        <button className=" cursor-pointer  rounded-md text-sm font-semibold  text-[#3ea6ff]">
                            {buttonName}
                         </button>
                       </Dialog.Trigger>
@@ -55,7 +55,7 @@ const LinkUploadDialogBox = ({buttonName, linkOf, setLink, link,handleLink }:Lin
                             </Button>
                           </Dialog.Close>
                           <Dialog.Close>
-                            <button className="text-[#3ea6ff] cursor-pointer" onClick={ ()=> {handleLink(link)}} >Update</button>
+                            <Button className="text-[#3ea6ff] cursor-pointer" onClick={ ()=> {handleLink(link)}} >Update</Button>
                           </Dialog.Close>
                         </Flex>
                       </Dialog.Content>
