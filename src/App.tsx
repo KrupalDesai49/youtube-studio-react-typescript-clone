@@ -13,6 +13,9 @@ import Content from "./pages/Content";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import '@radix-ui/themes/styles.css';
+import { Theme } from '@radix-ui/themes';
+
 function App() {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedType, setSelectedType] = useState<"Video" | "Short">("Video");
@@ -29,6 +32,7 @@ function App() {
 
   return (
     <>
+    <Theme>
       <AuthContextProvider>
         <Router>
           <div className="font-roboto relative flex h-screen flex-col bg-[#1f1f1f] text-white">
@@ -88,6 +92,7 @@ function App() {
           </div>
         </Router>
       </AuthContextProvider>
+      </Theme>
     </>
   );
 }
