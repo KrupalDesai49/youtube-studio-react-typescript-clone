@@ -38,12 +38,11 @@ const UserProfile = () => {
   const [channelDescription, setChannelDescription] = useState("");
   const [logoLink, setLogoLink] = useState("");
   const [bannerLink, setBannerLink] = useState("");
+  const [isChannelHaveTick, setIsChannelHaveTick] = useState(false);
 
-  const [isDataUpdated, setIsDataUpdated] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
+  const [isDataUpdated, setIsDataUpdated] = useState(false);
   const [isLinkHaveError, setIsLinkHaveError] = useState<null | boolean>(null);
-  // const [isLogoDialogoBoxOpen, setIsLogoDialogBoxOpen] = useState(true);
-  // const [isBannerDialogBoxOpen, setIsBannerDialogBoxOpen] = useState(false);
 
   useEffect(() => {
     // Check if user and user.email are defined
@@ -177,6 +176,10 @@ const UserProfile = () => {
     });
   };
 
+  const handleChannleTick = (haveTick:boolean) => {
+    setIsChannelHaveTick(haveTick)
+  }
+
   return (
     <>
       <div className="no-scrollbar flex w-full flex-col justify-start overflow-y-scroll px-6 py-6  ">
@@ -235,6 +238,37 @@ const UserProfile = () => {
                 placeholder={`Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places.`}
                 className="w-full resize-none appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 text-sm outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
               />
+            </div>
+          </div>
+
+          {/* Channel Tick Contianer*/}
+          <div className="flex flex-col pt-7">
+            <p className="text-lg font-[500]">Channel's Verified Tick</p>
+
+            {/* Edittext */}
+            <div className="flex space-x-5 pt-3">
+              {/* VIdeo Type */}
+              <button
+                onClick={() => {
+                  handleChannleTick(true)
+                }}
+                className={`rounded-md flex items-center px-5 py-2  font-semibold ${isChannelHaveTick ? "bg-[#ff0000]" : " bg-neutral-600"}`}
+              >
+                {channelName} 
+                <svg className="w-[1.1rem] ml-2" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#fff" fill-rule="evenodd" d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0m7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768z" clip-rule="evenodd"/>
+</svg>
+              </button>
+              <button
+                onClick={() => {
+                  handleChannleTick(false)
+                }}
+                className={`rounded-md px-5 py-2  font-semibold ${!isChannelHaveTick  ? "bg-[#ff0000]" : " bg-neutral-600"}`}
+              >
+                {channelName}
+              </button>
+
+              {/*  */}
             </div>
           </div>
 
