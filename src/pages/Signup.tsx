@@ -33,7 +33,7 @@ const Signup = () => {
 
   return (
     <>
-      <div className=" w-full  ">
+      <div className=" w-full  overflow-y-scroll no-scrollbar">
         <img
           src={login_bg}
           alt="/"

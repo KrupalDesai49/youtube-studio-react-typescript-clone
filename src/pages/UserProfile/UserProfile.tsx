@@ -1,7 +1,6 @@
 import arrow from "../../assets/right_arrow.svg";
 import ch_banner from "../../assets/ch_banner.png";
 import { UserAuth } from "../../components/AuthContext";
-import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -15,6 +14,7 @@ import { db } from "../../context/firebase";
 import LinkUploadDialogBox from "./LinkUploadDialogBox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { User } from "firebase/auth";
 
 type UserDataType = {
   id: string;
@@ -30,7 +30,7 @@ type UserDataType = {
 };
 
 const UserProfile = () => {
-  const { user }: any = UserAuth();
+  const { user }: User |undefined  = UserAuth();
 
   const [userData, setUserData] = useState<UserDataType>({} as UserDataType);
 
@@ -114,7 +114,7 @@ const UserProfile = () => {
           logo_link: logoLink,
           banner_link: bannerLink,
         });
-        await toast.success(
+         toast.success(
           "The Channel Profile has been Successfully Updated.",
           {
             position: "bottom-right",
@@ -127,8 +127,8 @@ const UserProfile = () => {
             theme: "dark",
           },
         );
-        await setIsDataUpdated(false);
-        await setIsDataAvailable(false);
+         setIsDataUpdated(false);
+         setIsDataAvailable(false);
       }
     } catch (error) {
       console.error(error);

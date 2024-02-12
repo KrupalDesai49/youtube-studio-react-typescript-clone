@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@firebase/firestore':
+    specifier: ^4.4.2
+    version: 4.4.2(@firebase/app@0.9.26)
   '@radix-ui/themes':
     specifier: ^2.0.3
     version: 2.0.3(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
@@ -717,6 +720,13 @@ packages:
       tslib: 2.6.2
     dev: false
 
+  /@firebase/component@0.6.5:
+    resolution: {integrity: sha512-2tVDk1ixi12sbDmmfITK8lxSjmcb73BMF6Qwc3U44hN/J1Fi1QY/Hnnb6klFlbB9/G16a3J3d4nXykye2EADTw==}
+    dependencies:
+      '@firebase/util': 1.9.4
+      tslib: 2.6.2
+    dev: false
+
   /@firebase/database-compat@1.0.2:
     resolution: {integrity: sha512-09ryJnXDvuycsxn8aXBzLhBTuCos3HEnCOBWY6hosxfYlNCGnLvG8YMlbSAt5eNhf7/00B095AEfDsdrrLjxqA==}
     dependencies:
@@ -783,6 +793,23 @@ packages:
       '@firebase/component': 0.6.4
       '@firebase/logger': 0.4.0
       '@firebase/util': 1.9.3
+      '@firebase/webchannel-wrapper': 0.10.5
+      '@grpc/grpc-js': 1.9.14
+      '@grpc/proto-loader': 0.7.10
+      tslib: 2.6.2
+      undici: 5.26.5
+    dev: false
+
+  /@firebase/firestore@4.4.2(@firebase/app@0.9.26):
+    resolution: {integrity: sha512-YaX6ypa/RzU6OkxzUQlpSxwhOIWdTraCNz7sMsbaSEjjl/pj/QvX6TqjkdWGzuBYh2S6rz7ErhDO0g39oZZw/g==}
+    engines: {node: '>=10.10.0'}
+    peerDependencies:
+      '@firebase/app': 0.x
+    dependencies:
+      '@firebase/app': 0.9.26
+      '@firebase/component': 0.6.5
+      '@firebase/logger': 0.4.0
+      '@firebase/util': 1.9.4
       '@firebase/webchannel-wrapper': 0.10.5
       '@grpc/grpc-js': 1.9.14
       '@grpc/proto-loader': 0.7.10
@@ -1004,6 +1031,12 @@ packages:
 
   /@firebase/util@1.9.3:
     resolution: {integrity: sha512-DY02CRhOZwpzO36fHpuVysz6JZrscPiBXD0fXp6qSrL9oNOx5KWICKdR95C0lSITzxp0TZosVyHqzatE8JbcjA==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
+
+  /@firebase/util@1.9.4:
+    resolution: {integrity: sha512-WLonYmS1FGHT97TsUmRN3qnTh5TeeoJp1Gg5fithzuAgdZOUtsYECfy7/noQ3llaguios8r5BuXSEiK82+UrxQ==}
     dependencies:
       tslib: 2.6.2
     dev: false

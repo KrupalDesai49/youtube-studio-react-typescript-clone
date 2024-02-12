@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="h-full w-full ">
+      <div className="h-full w-full overflow-y-scroll no-scrollbar ">
         <img
           src={login_bg}
           alt="/"

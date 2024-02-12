@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../context/firebase";
 import { User } from "firebase/auth";
+import { DocumentReference } from '@firebase/firestore';
 
 import {
   createUserWithEmailAndPassword,
@@ -10,9 +11,8 @@ import {
   updateProfile,
   signInWithPopup, GoogleAuthProvider
 } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc, collection } from "firebase/firestore";
 
-// const AuthContext = createContext();
 
  
 interface AuthContextValue {
@@ -33,9 +33,48 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<User | undefined>(undefined);
 
-const googleSignIn = () =>{
-  const provider = new GoogleAuthProvider();
-  signInWithPopup(auth,provider)
+
+
+const googleSignIn = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user =  result.user;
+
+   
+    // Check if the user object exists before proceeding
+    if (user && user.email) {
+      const docRef = doc(collection(db, "user"), user.email);
+
+      const checkDocumentExistenceAndExecute = async (docRef:DocumentReference) => {
+        const docSnapshot = await getDoc(docRef);
+
+        if (!docSnapshot.exists()) {
+          await setDoc(docRef, {
+            displayName: user.displayName,
+            description: '',
+            logo_link: '',
+            banner_link: '',
+            channelID:
+              "@" +
+              user.displayName
+                ?.split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(""),
+            tick: false,
+            subscribers: 0,
+            timestamp: Date.now(),
+            isLogInByGoogle: true,
+          });
+        }
+      };
+
+      await checkDocumentExistenceAndExecute(docRef);
+
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 async function signUp(email: string, password: string, displayName: string): Promise<void> {
@@ -49,8 +88,20 @@ async function signUp(email: string, password: string, displayName: string): Pro
         displayName: displayName,
       });
       await setDoc(doc(db, "user", email), {
-        savedShows: [],
         displayName: displayName,
+        description: '',
+        logo_link: '',
+        banner_link: '',
+        channelID:
+          "@" +
+          displayName
+            ?.split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(""),
+        tick: false,
+        subscribers: 0,
+        timestamp: Date.now(),
+        isLogInByGoogle: false,
       });
     } catch (error) {
       console.error(error);
