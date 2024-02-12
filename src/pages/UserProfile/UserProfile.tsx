@@ -3,7 +3,14 @@ import ch_banner from "../../assets/ch_banner.png";
 import { UserAuth } from "../../components/AuthContext";
 import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../context/firebase";
 import LinkUploadDialogBox from "./LinkUploadDialogBox";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,10 +33,12 @@ const UserProfile = () => {
   const { user }: any = UserAuth();
 
   const [userData, setUserData] = useState<UserDataType>({} as UserDataType);
+
   const [channelName, setChannelName] = useState("");
   const [channelDescription, setChannelDescription] = useState("");
   const [logoLink, setLogoLink] = useState("");
   const [bannerLink, setBannerLink] = useState("");
+
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
   const [isLinkHaveError, setIsLinkHaveError] = useState<null | boolean>(null);
@@ -50,10 +59,11 @@ const UserProfile = () => {
             } as UserDataType;
             setUserData(userData);
 
-            //   console.log(userData);
+            console.log(userData);
             setChannelName(userData.displayName);
-            if (userData.description !== null)
-              return setChannelDescription(userData.description);
+            setChannelDescription(userData.description);
+            setLogoLink(userData.logo_link);
+            setBannerLink(userData.banner_link);
             setIsDataAvailable(true);
           } else {
             console.log("No such document!");
@@ -66,7 +76,7 @@ const UserProfile = () => {
 
       getData();
     }
-  }, [user]);
+  }, [user,isDataAvailable]);
 
   useEffect(() => {
     const handleData = async () => {
@@ -86,10 +96,36 @@ const UserProfile = () => {
     handleData();
   }, [isDataAvailable, channelName, channelDescription, logoLink, bannerLink]);
 
+  const publishChannelProfile = async () => {
+    try {
+      if (isDataUpdated) {
+        await updateDoc(doc(db, "user", user.email), {
+          displayName: channelName,
+          description: channelDescription,
+          logo_link: logoLink,
+          banner_link: bannerLink,
+        });
+        await toast.success(
+          "The Channel Profile has been Successfully Updated.",
+          {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          },
+        );
+        await setIsDataUpdated(false)
+        await   setIsDataAvailable(false);
 
-  const publishUserProfile = async () => {
-    
-  }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleLink = async (link: string, setLink: (link: string) => void) => {
     try {
@@ -118,7 +154,7 @@ const UserProfile = () => {
       console.log("Validation result:yesssssss:: ", isImage);
       return true;
     } catch (error) {
-      console.error('Failed to validate image URL:::', error);
+      console.error("Failed to validate image URL:::", error);
       console.log("Nooooooooo::");
       setLink("");
       setIsLinkHaveError(true);
@@ -138,8 +174,8 @@ const UserProfile = () => {
       progress: undefined,
       theme: "dark",
       // transition: slide,
-      });
-  }
+    });
+  };
 
   return (
     <>
@@ -152,14 +188,14 @@ const UserProfile = () => {
           {/* Submit Button */}
           <div className=" group mt-5 w-fit cursor-pointer md:mt-0 ">
             <div
-              // onClick={handleUploadVideo}
-              className={`flex w-fit items-center rounded-md  px-6 py-2  font-semibold ${isDataUpdated ? "bg-[#ff0000]" : "bg-[#606060]"}`}
+              onClick={publishChannelProfile}
+              className={`flex w-fit items-center rounded-md  px-6 py-2  font-semibold justify-center ${isDataUpdated ? "bg-[#ff0000]" : "bg-[#606060]"}`}
             >
               <span>Publish</span>
               <img
                 src={arrow}
                 alt=""
-                className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"
+                className="ml-2.5  w-3.5 transition duration-300 group-hover:rotate-180"
               />
             </div>
           </div>
@@ -178,6 +214,7 @@ const UserProfile = () => {
                 value={channelName}
                 onChange={(e) => setChannelName(e.target.value)}
                 maxLength={50}
+                minLength={2}
                 placeholder={`Enter Channel Name Here`}
                 className="w-full resize-none appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 text-sm outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
               />
@@ -206,7 +243,7 @@ const UserProfile = () => {
             <p className="text-lg font-[500]">Channel Logo</p>
 
             {/* Logo Customization */}
-            <div className="flex flex-row pt-3  ">
+            <div className="flex flex-row pt-3">
               {/* Logo */}
               <div className="shrink-0">
                 {user?.displayName &&
