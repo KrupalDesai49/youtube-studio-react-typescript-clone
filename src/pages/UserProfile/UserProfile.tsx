@@ -63,6 +63,7 @@ const UserProfile = () => {
             setChannelDescription(userData.description);
             setLogoLink(userData.logo_link);
             setBannerLink(userData.banner_link);
+            setIsChannelHaveTick(userData.tick);
             setIsDataAvailable(true);
           } else {
             console.log("No such document!");
@@ -75,7 +76,7 @@ const UserProfile = () => {
 
       getData();
     }
-  }, [user,isDataAvailable]);
+  }, [user, isDataAvailable]);
 
   useEffect(() => {
     const handleData = async () => {
@@ -83,6 +84,7 @@ const UserProfile = () => {
         const isUpdated =
           userData?.displayName !== channelName ||
           userData?.description !== channelDescription ||
+          userData?.tick !== isChannelHaveTick ||
           userData?.logo_link !== logoLink ||
           userData?.banner_link !== bannerLink;
 
@@ -93,7 +95,14 @@ const UserProfile = () => {
       }
     };
     handleData();
-  }, [isDataAvailable, channelName, channelDescription, logoLink, bannerLink]);
+  }, [
+    isDataAvailable,
+    channelName,
+    isChannelHaveTick,
+    channelDescription,
+    logoLink,
+    bannerLink,
+  ]);
 
   const publishChannelProfile = async () => {
     try {
@@ -101,6 +110,7 @@ const UserProfile = () => {
         await updateDoc(doc(db, "user", user.email), {
           displayName: channelName,
           description: channelDescription,
+          tick: isChannelHaveTick,
           logo_link: logoLink,
           banner_link: bannerLink,
         });
@@ -117,9 +127,8 @@ const UserProfile = () => {
             theme: "dark",
           },
         );
-        await setIsDataUpdated(false)
-        await   setIsDataAvailable(false);
-
+        await setIsDataUpdated(false);
+        await setIsDataAvailable(false);
       }
     } catch (error) {
       console.error(error);
@@ -176,9 +185,9 @@ const UserProfile = () => {
     });
   };
 
-  const handleChannleTick = (haveTick:boolean) => {
-    setIsChannelHaveTick(haveTick)
-  }
+  const handleChannleTick = (haveTick: boolean) => {
+    setIsChannelHaveTick(haveTick);
+  };
 
   return (
     <>
@@ -192,7 +201,7 @@ const UserProfile = () => {
           <div className=" group mt-5 w-fit cursor-pointer md:mt-0 ">
             <div
               onClick={publishChannelProfile}
-              className={`flex w-fit items-center rounded-md  px-6 py-2  font-semibold justify-center ${isDataUpdated ? "bg-[#ff0000]" : "bg-[#606060]"}`}
+              className={`flex w-fit items-center justify-center  rounded-md px-6  py-2 font-semibold ${isDataUpdated ? "bg-[#ff0000]" : "bg-[#606060]"}`}
             >
               <span>Publish</span>
               <img
@@ -250,20 +259,29 @@ const UserProfile = () => {
               {/* VIdeo Type */}
               <button
                 onClick={() => {
-                  handleChannleTick(true)
+                  handleChannleTick(true);
                 }}
-                className={`rounded-md flex items-center px-5 py-2  font-semibold ${isChannelHaveTick ? "bg-[#ff0000]" : " bg-neutral-600"}`}
+                className={`flex items-center rounded-md px-5 py-2  font-semibold ${isChannelHaveTick ? "bg-[#ff0000]" : " bg-neutral-600"}`}
               >
-                {channelName} 
-                <svg className="w-[1.1rem] ml-2" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#fff" fill-rule="evenodd" d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0m7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768z" clip-rule="evenodd"/>
-</svg>
+                {channelName}
+                <svg
+                  className="ml-2 w-[1.1rem]"
+                  viewBox="0 0 15 15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill="#fff"
+                    fill-rule="evenodd"
+                    d="M0 7.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0m7.072 3.21l4.318-5.398l-.78-.624l-3.682 4.601L4.32 7.116l-.64.768z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
               </button>
               <button
                 onClick={() => {
-                  handleChannleTick(false)
+                  handleChannleTick(false);
                 }}
-                className={`rounded-md px-5 py-2  font-semibold ${!isChannelHaveTick  ? "bg-[#ff0000]" : " bg-neutral-600"}`}
+                className={`rounded-md px-5 py-2  font-semibold ${!isChannelHaveTick ? "bg-[#ff0000]" : " bg-neutral-600"}`}
               >
                 {channelName}
               </button>
