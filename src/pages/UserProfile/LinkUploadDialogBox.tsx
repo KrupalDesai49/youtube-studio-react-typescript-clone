@@ -4,7 +4,7 @@ import {
   Button,
   TextField,
   Dialog,
-  DialogClose,
+  
 } from "@radix-ui/themes";
 
 type LinkUploadDialogBoxProp = {
@@ -18,6 +18,7 @@ type LinkUploadDialogBoxProp = {
   link: string;
   isLinkHaveError: boolean | null;
   setIsLinkHaveError:(set:null|boolean)=>void
+  notify:(message:string)=>null
 };
 
 const LinkUploadDialogBox = ({
@@ -28,7 +29,17 @@ const LinkUploadDialogBox = ({
   handleLink,
   isLinkHaveError,
   setIsLinkHaveError,
+  notify,
 }: LinkUploadDialogBoxProp) => {
+
+const checkLinkValidity = () => {
+  if(isLinkHaveError){
+    notify(`Please provide a valid link to the channel ${linkOf}` )
+
+    
+  }
+}
+
   return (
     <div>
       <Dialog.Root>
@@ -61,13 +72,13 @@ const LinkUploadDialogBox = ({
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
               />
-              <p className="pt-1 text-xs text-white">
+              {/* <div className="pt-1 text-xs text-white">
                 {isLinkHaveError === null
                   ? <pre> </pre>
                   : !isLinkHaveError
                     ? ""
                     : "This is not a valid link."}
-              </p>
+              </div> */}
             </label>
           </Flex>
 
@@ -85,8 +96,9 @@ const LinkUploadDialogBox = ({
               <Dialog.Close>
                 <Button
                   className="cursor-pointer bg-transparent text-[#3ea6ff]"
-                  onClick={() => {
-                    handleLink(link, setLink);
+                  onClick={async () => {
+                   await handleLink(link, setLink);
+                   await checkLinkValidity()
                   }}
                 >
                   Update

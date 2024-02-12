@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import LinkUploadDialogBox from "./LinkUploadDialogBox";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type UserDataType = {
   id: string;
   displayName: string;
-  description:  string;
-  logo_link:  string;
+  description: string;
+  logo_link: string;
   banner_link: string;
   channelID: string;
   tick: boolean;
@@ -30,7 +32,7 @@ const UserProfile = () => {
   const [bannerLink, setBannerLink] = useState("");
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
-const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
+  const [isLinkHaveError, setIsLinkHaveError] = useState<null | boolean>(null);
   // const [isLogoDialogoBoxOpen, setIsLogoDialogBoxOpen] = useState(true);
   // const [isBannerDialogBoxOpen, setIsBannerDialogBoxOpen] = useState(false);
 
@@ -73,7 +75,7 @@ const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
           userData?.displayName !== channelName ||
           userData?.description !== channelDescription ||
           userData?.logo_link !== logoLink ||
-          userData?.banner_link !== bannerLink
+          userData?.banner_link !== bannerLink;
 
         // console.log(isUpdated);
         if (isUpdated) return setIsDataUpdated(true);
@@ -82,44 +84,68 @@ const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
       }
     };
     handleData();
-  }, [isDataAvailable, channelName, channelDescription,logoLink,bannerLink]);
+  }, [isDataAvailable, channelName, channelDescription, logoLink, bannerLink]);
 
-  
-  const handleLink = async (link: string,setLink:(link:string)=>void) => {
+
+  const publishUserProfile = async () => {
+    
+  }
+
+  const handleLink = async (link: string, setLink: (link: string) => void) => {
     try {
-      const response = await fetch(link, { method: 'HEAD' });
-      const contentType = response.headers.get('Content-Type');
-      const imageExtensions = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml','image/bmp','image/ico','image/tiff','image/apng','image/avif'];
-  
-      const isImage = contentType && imageExtensions.includes(contentType);
-      if(!isImage){
-        setLink('')
-        setIsLinkHaveError(true)
-      return false
-      }
-      setIsLinkHaveError(null)
-      console.log("Validation result:yesssssss:: ", isImage);
-      return true
-    } catch (error) {
-      // console.error('Failed to validate image URL:::', error);
-      console.log("Nooooooooo::")
-      setIsLinkHaveError(null)
-      return false
+      const response = await fetch(link, { method: "HEAD" });
+      const contentType = response.headers.get("Content-Type");
+      const imageExtensions = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif",
+        "image/svg+xml",
+        "image/bmp",
+        "image/ico",
+        "image/tiff",
+        "image/apng",
+        "image/avif",
+      ];
 
+      const isImage = contentType && imageExtensions.includes(contentType);
+      if (!isImage) {
+        setLink("");
+        setIsLinkHaveError(true);
+        return false;
+      }
+      setIsLinkHaveError(null);
+      console.log("Validation result:yesssssss:: ", isImage);
+      return true;
+    } catch (error) {
+      console.error('Failed to validate image URL:::', error);
+      console.log("Nooooooooo::");
+      setLink("");
+      setIsLinkHaveError(true);
+      return false;
     }
   };
-  
 
-  
-
- 
-
+  const notify = (message: string) => {
+    // toast(message)
+    toast.error(message, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      // transition: slide,
+      });
+  }
 
   return (
     <>
       <div className="no-scrollbar flex w-full flex-col justify-start overflow-y-scroll px-6 py-6  ">
         {/* Page Head Line */}
-        <div className="flex flex-col justify-between md:flex-row sticky flex-1  w-full">
+        <div className="sticky flex w-full flex-1 flex-col justify-between  md:flex-row">
           {/* Page Name */}
           <div className="text-2xl font-semibold ">Channel Customization</div>
 
@@ -153,7 +179,7 @@ const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
                 onChange={(e) => setChannelName(e.target.value)}
                 maxLength={50}
                 placeholder={`Enter Channel Name Here`}
-                className="w-full text-sm resize-none appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
+                className="w-full resize-none appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 text-sm outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
               />
             </div>
           </div>
@@ -170,7 +196,7 @@ const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
                 maxLength={1000}
                 rows={10}
                 placeholder={`Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places.`}
-                className="w-full text-sm resize-none appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
+                className="w-full resize-none appearance-none rounded-md border border-[#606060] bg-transparent px-4 py-2 text-sm outline-none placeholder:text-[#717171] hover:border-[#909090] focus:border-[#3ea6ff] lg:w-[60%]"
               />
             </div>
           </div>
@@ -213,11 +239,25 @@ const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
                 <div className="flex space-x-5 ">
                   {/* LOGO Change Button */}
                   <div className="">
-                    <LinkUploadDialogBox buttonName="Change" linkOf="Logo" link={logoLink} setLink={setLogoLink} handleLink={handleLink} isLinkHaveError={isLinkHaveError} setIsLinkHaveError={setIsLinkHaveError}/>
-                   
+                    <LinkUploadDialogBox
+                      buttonName="Change"
+                      linkOf="Logo"
+                      link={logoLink}
+                      setLink={setLogoLink}
+                      handleLink={handleLink}
+                      isLinkHaveError={isLinkHaveError}
+                      setIsLinkHaveError={setIsLinkHaveError}
+                      notify={notify}
+                    />
                   </div>
                   {/* LOGO Remove Button */}
-                  <button className=" cursor-pointer rounded-md text-sm font-semibold mt-[0.1rem]  text-[#3ea6ff]" onClick={()=>{setLogoLink(""); setIsLinkHaveError(null)}}>
+                  <button
+                    className=" mt-[0.1rem] cursor-pointer rounded-md text-sm font-semibold  text-[#3ea6ff]"
+                    onClick={() => {
+                      setLogoLink("");
+                      setIsLinkHaveError(null);
+                    }}
+                  >
                     Remove
                   </button>
                 </div>
@@ -245,9 +285,24 @@ const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
                   least 2048 x 1152 pixels and 6MB or less.
                 </p>
                 <div className="flex space-x-5">
-                <LinkUploadDialogBox buttonName="Upload" linkOf="Banner" link={bannerLink} setLink={setBannerLink} handleLink={handleLink} isLinkHaveError={isLinkHaveError} setIsLinkHaveError={setIsLinkHaveError}/>
+                  <LinkUploadDialogBox
+                    buttonName="Upload"
+                    linkOf="Banner"
+                    link={bannerLink}
+                    setLink={setBannerLink}
+                    handleLink={handleLink}
+                    isLinkHaveError={isLinkHaveError}
+                    setIsLinkHaveError={setIsLinkHaveError}
+                    notify={notify}
+                  />
 
-                  <button className=" rounded-md text-sm font-semibold text-[#3ea6ff]  " onClick={()=>{setBannerLink(""); setIsLinkHaveError(null)}}>
+                  <button
+                    className=" rounded-md text-sm font-semibold text-[#3ea6ff]  "
+                    onClick={() => {
+                      setBannerLink("");
+                      setIsLinkHaveError(null);
+                    }}
+                  >
                     Remove
                   </button>
                 </div>
@@ -256,6 +311,7 @@ const [isLinkHaveError, setIsLinkHaveError] = useState<null|boolean>(null)
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
