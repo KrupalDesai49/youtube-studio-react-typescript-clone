@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import arrow from "../../assets/right_arrow.svg"
+import arrow from "../../assets/right_arrow.svg";
 import { useAtom } from "jotai";
 import { selectedStatusAtom } from "../../context/atom";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../../context/firebase";
+import { UserAuth } from "../../components/AuthContext";
+import { User } from "firebase/auth";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type SelectedType = "Video" | "Short";
 
 type VideoUploadProp = {
   selectedType: SelectedType;
   handleTypeChange: (type: SelectedType) => void;
-  handleUploadVideoId: (id:string)=>void
+  handleUploadVideoId: (id: string) => void;
+  linkId:string
 };
 
-
-const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: VideoUploadProp) => {
-  
-  const YOUTUBE_API_KEY = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY; 
+const VideoUpload = ({
+  selectedType,
+  handleTypeChange,
+  handleUploadVideoId,
+  linkId
+}: VideoUploadProp) => {
+  const YOUTUBE_API_KEY = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY;
   const navigate = useNavigate();
 
   // Regular expression to match YouTube URLs
@@ -28,35 +38,47 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
     /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/shorts\/(.+)/;
 
   const [inputURL, setInputURL] = useState("");
-  const [linkType, setLinkType] = useState<"standard" | "shorts" | "invalid">(
+  const [linkType, setLinkType] = useState<"video" | "shorts" | "invalid">(
     "invalid",
   );
 
   const [, setSelectedStatus] = useAtom(selectedStatusAtom);
+  const { user }: User |undefined  = UserAuth();
+
 
   useEffect(() => {
-    setSelectedStatus('p3')
-  }, [])
-  
+    setSelectedStatus("p3");
+  }, []);
 
   const handleClick = () => {
     const getId = extractYouTubeVideoId(inputURL);
     if (getId !== null) {
-      // setCanNavigate(true);
+
       handleUploadVideoId(getId);
-      // setLinkType(identifyYouTubeLinkType(inputURL));
 
       isValidYouTubeVideoId(getId)
         .then((isValid) => {
           if (isValid) {
-            if (selectedType === "Video") {
-              console.log("The YouTube video ID is valid.");
-              navigate("/upload/details");
-            } else if (selectedType === "Short") {
+            if (linkType === "shorts") {
               console.log("The YouTube Short ID is valid.");
-              ///// TODO - to Store Data in Firebase 
-              // navigate("/");
 
+              if (selectedType === "Video") {
+                handleTypeChange("Short");
+              } else if (selectedType === "Short") {
+                //   ///// TODO - to Store Data in Firebase
+                publishYouTubeShort()
+                // navigate("/");
+              }
+            } else if (linkType === "video") {
+              console.log("The YouTube video ID is valid.");
+
+              if (selectedType === "Short") {
+                // handleTypeChange("Video");
+                navigate("/upload/details");
+              }
+              if (selectedType === "Video") {
+                navigate("/upload/details");
+              }
             }
           } else {
             setLinkType("invalid");
@@ -66,9 +88,48 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
         .catch(console.error);
     } else {
       setLinkType("invalid");
+    }
+  };
 
-      // Prevent navigation if checkFunction returns false
-      // event.preventDefault();
+  const publishYouTubeShort = async () => {
+    try {
+
+   
+      const shortData = {
+        shortID: linkId,
+        timestamp: Date.now(),
+      };
+  
+
+      const docRef = doc(collection(db, "user", user.email, "short"), linkId);
+      const docRef2 = doc(collection(db, "short"), linkId);
+
+
+      await setDoc(
+        docRef,
+        shortData,
+      );
+      await setDoc(
+        docRef2,
+        shortData,
+      );
+
+       toast.success(
+        "Given Youtube Short has been Successfully Publish.",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      console.log("error");
     }
   };
 
@@ -97,12 +158,12 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
 
   const identifyYouTubeLinkType = (
     url: string,
-  ): "standard" | "shorts" | "invalid" => {
+  ): "video" | "shorts" | "invalid" => {
     if (youTubeURLRegex.test(url)) {
       if (shortYouTubeURLRegex.test(url)) {
         return "shorts";
       } else {
-        return "standard";
+        return "video";
       }
     }
     return "invalid";
@@ -173,7 +234,7 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
             {/* Link Validated Text*/}
             <div className="mt-1">
               {inputURL === "" && <pre className="font-[500]"> </pre>}
-              {linkType === "standard" && inputURL !== "" && (
+              {linkType === "video" && inputURL !== "" && (
                 <p className="font-[500]">
                   This is a Standard{" "}
                   <span className="text-[#ff0000] ">YouTube Video</span> link.
@@ -186,9 +247,7 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
                 </p>
               )}
               {linkType === "invalid" && inputURL !== "" && (
-                <p className="font-[500]">
-                  This is not a valid YouTube link.
-                </p>
+                <p className="font-[500]">This is not a valid YouTube link.</p>
               )}
             </div>
           </div>
@@ -204,12 +263,17 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
                   ? "Next Page"
                   : "Upload Youtube Short"}
               </span>
-              <img src={arrow} alt=""  className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"/>
+              <img
+                src={arrow}
+                alt=""
+                className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"
+              />
             </div>
           </div>
         </div>
       </div>
-    </>
+      <ToastContainer/>
+      </>
   );
 };
 

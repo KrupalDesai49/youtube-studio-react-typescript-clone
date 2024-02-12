@@ -66,6 +66,7 @@ function App() {
                         selectedType={selectedType}
                         handleTypeChange={handleTypeChange}
                         handleUploadVideoId={handleUploadVideoId}
+                        linkId={linkId}
                       />
                     // </ProtectedRoute>
                   }
