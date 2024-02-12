@@ -15,6 +15,8 @@ import LinkUploadDialogBox from "./LinkUploadDialogBox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { User } from "firebase/auth";
+import { useAtom } from "jotai";
+import { selectedStatusAtom } from "../../context/atom";
 
 type UserDataType = {
   id: string;
@@ -30,8 +32,10 @@ type UserDataType = {
 };
 
 const UserProfile = () => {
-  const { user }: User |undefined  = UserAuth();
 
+  const { user }: User |undefined  = UserAuth();
+  const [, setSelectedStatus] = useAtom(selectedStatusAtom);
+  
   const [userData, setUserData] = useState<UserDataType>({} as UserDataType);
 
   const [channelName, setChannelName] = useState("");
@@ -45,6 +49,7 @@ const UserProfile = () => {
   const [isLinkHaveError, setIsLinkHaveError] = useState<null | boolean>(null);
 
   useEffect(() => {
+    setSelectedStatus('p4')
     // Check if user and user.email are defined
     if (user && user.email) {
       const docRef = doc(db, "user", user.email);
@@ -191,7 +196,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="no-scrollbar flex w-full flex-col justify-start overflow-y-scroll px-6 py-6  ">
+      <div className="flex w-full flex-col justify-start  px-6 py-6  ">
         {/* Page Head Line */}
         <div className="sticky flex w-full flex-1 flex-col justify-between  md:flex-row">
           {/* Page Name */}
@@ -214,7 +219,7 @@ const UserProfile = () => {
         </div>
 
         {/* CHannel Customization container */}
-        <div className="pt-12">
+        <div className="pt-12 overflow-y-scroll no-scrollbar ">
           {/* Channel Name Contianer */}
           <div className="flex flex-col ">
             <p className="text-lg font-[500]">Channel Name</p>

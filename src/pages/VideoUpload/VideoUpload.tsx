@@ -174,19 +174,19 @@ const VideoUpload = ({ selectedType, handleTypeChange, handleUploadVideoId }: Vi
             <div className="mt-1">
               {inputURL === "" && <pre className="font-[500]"> </pre>}
               {linkType === "standard" && inputURL !== "" && (
-                <p className="font-semibold">
+                <p className="font-[500]">
                   This is a Standard{" "}
                   <span className="text-[#ff0000] ">YouTube Video</span> link.
                 </p>
               )}
               {linkType === "shorts" && inputURL !== "" && (
-                <p className="font-semibold">
+                <p className="font-[500]">
                   This is a Standard{" "}
                   <span className="text-[#ff0000] ">YouTube Short</span> link.
                 </p>
               )}
               {linkType === "invalid" && inputURL !== "" && (
-                <p className="font-semibold">
+                <p className="font-[500]">
                   This is not a valid YouTube link.
                 </p>
               )}
