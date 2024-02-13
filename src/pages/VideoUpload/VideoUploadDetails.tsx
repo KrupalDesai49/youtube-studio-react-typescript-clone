@@ -23,9 +23,10 @@ interface VideoDetails {
 }
 type VideoUploadDetailsProp = {
   linkId: string;
+  successToast:(message:string)=>void
 };
 
-const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
+const VideoUploadDetails = ({ linkId, successToast }: VideoUploadDetailsProp) => {
   const apiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY;
   const navigate = useNavigate();
 
@@ -147,19 +148,17 @@ dislike:false,
         shortData,
       );
 
-       toast.success(
-        "Given Youtube Video has been Successfully Publish.",
-        {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        },
-      );
+      // successToast("Given Youtube Video has been Successfully Publish.")
+      toast.success("Given Youtube Video has been Successfully Publish.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
 
       // navigate('/')
     } catch (error) {
@@ -236,6 +235,7 @@ dislike:false,
           
         </div>
       </div>
+      
       <ToastContainer/>
 
     </>
