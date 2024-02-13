@@ -4,10 +4,16 @@ import { useNavigate } from "react-router-dom";
 import arrow from "../../assets/right_arrow.svg"
 
 import axios from "axios";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import { selectedStatusAtom } from "../../context/atom";
 import { useAtom } from "jotai";
+
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { User } from "firebase/auth";
+import { UserAuth } from "../../components/AuthContext";
 
 interface VideoDetails {
   title: string;
@@ -28,6 +34,10 @@ const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
   const [videoDetails, setVideoDetails] = useState<VideoDetails >({} as VideoDetails);
 
   const [, setSelectedStatus] = useAtom(selectedStatusAtom);
+  const { user }: User |undefined  = UserAuth();
+
+
+
 
 
   useEffect(() => {
@@ -103,6 +113,60 @@ const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
     setVideoDescription(newValue);
   };
 
+  const publishYouTubeVideo = async () => {
+    try {
+
+      const shortData = {
+        
+thumbnail:videoDetails.thumbnails,
+title:videoTitle,
+duration:videoDetails.duration,
+description:videoDescription,
+channel_email:user.email,
+subscribe:0,
+view:0,
+likes_count:0,
+like:false,
+dislike:false,
+
+        VideoID: linkId,
+        timestamp: Date.now(),
+      };
+  
+
+      const docRef = doc(collection(db, "user", user.email, "video"), linkId);
+      const docRef2 = doc(collection(db, "video"), linkId);
+
+
+      await setDoc(
+        docRef,
+        shortData,
+      );
+      await setDoc(
+        docRef2,
+        shortData,
+      );
+
+       toast.success(
+        "Given Youtube Video has been Successfully Publish.",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        },
+      );
+
+      // navigate('/')
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const handleUploadVideo = async () =>{
 
     try{
@@ -110,6 +174,7 @@ const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
       //   collection(db, "ytvideo2" ),
       //   videoDetails,
       // );
+      publishYouTubeVideo()
 
     }catch (e){
       console.log("Upload Video Data Error!!",e)
@@ -171,6 +236,8 @@ const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
           
         </div>
       </div>
+      <ToastContainer/>
+
     </>
   );
 };

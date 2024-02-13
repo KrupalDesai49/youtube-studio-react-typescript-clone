@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import arrow from "../../assets/right_arrow.svg";
 import { useAtom } from "jotai";
 import { selectedStatusAtom } from "../../context/atom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {  collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import { UserAuth } from "../../components/AuthContext";
 import { User } from "firebase/auth";
@@ -129,7 +129,6 @@ const VideoUpload = ({
       );
     } catch (error) {
       console.error(error);
-      console.log("error");
     }
   };
 
