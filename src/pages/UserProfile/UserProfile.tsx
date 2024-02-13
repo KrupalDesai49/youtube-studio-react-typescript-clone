@@ -47,6 +47,8 @@ const UserProfile = () => {
   const [isDataAvailable, setIsDataAvailable] = useState(false);
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const [isLinkHaveError, setIsLinkHaveError] = useState<null | boolean>(null);
+  const [isLogoLinkValid, setLogoIsLinkValid] = useState('');
+  const [isBannerLinkValid, setBannerIsLinkValid] = useState('');
 
   useEffect(() => {
     setSelectedStatus('p4')
@@ -165,12 +167,14 @@ const UserProfile = () => {
       }
       setIsLinkHaveError(null);
       console.log("Validation result:yesssssss:: ", isImage);
+
       return true;
     } catch (error) {
       console.error("Failed to validate image URL:::", error);
       console.log("Nooooooooo::");
       setLink("");
       setIsLinkHaveError(true);
+      // notify(`Please!! provide a valid link`)
       return false;
     }
   };
@@ -306,7 +310,7 @@ const UserProfile = () => {
                 {user?.displayName &&
                   (user.photoURL ? (
                     <img
-                      src={user ? (userData.logo_link!=="" ? userData.logo_link:user?.photoURL) : null}
+                      src={user ?isLogoLinkValid!==""?isLogoLinkValid:(userData.logo_link!=="" ? userData.logo_link:user?.photoURL) : null}
                       alt=""
                       className={`h-24 w-24 shrink-0 rounded-full transition-all duration-200`}
                     />
@@ -342,6 +346,8 @@ const UserProfile = () => {
                       isLinkHaveError={isLinkHaveError}
                       setIsLinkHaveError={setIsLinkHaveError}
                       notify={notify}
+                    setIsLinkValid={setLogoIsLinkValid}
+
                     />
                   </div>
                   {/* LOGO Remove Button */}
@@ -368,7 +374,7 @@ const UserProfile = () => {
               {/* Logo */}
               <img
                 // src={ch_banner}
-                src={ userData.banner_link!=="" ? userData.banner_link:ch_banner}
+                src={ userData.banner_link!=="" ? isBannerLinkValid!==""?isBannerLinkValid: userData.banner_link:ch_banner}
 
                 alt=""
                 className=" w-full max-w-96  md:w-72 "
@@ -390,6 +396,7 @@ const UserProfile = () => {
                     isLinkHaveError={isLinkHaveError}
                     setIsLinkHaveError={setIsLinkHaveError}
                     notify={notify}
+                    setIsLinkValid={setBannerIsLinkValid}
                   />
 
                   <button

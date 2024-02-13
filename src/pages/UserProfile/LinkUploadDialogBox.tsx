@@ -19,6 +19,7 @@ type LinkUploadDialogBoxProp = {
   isLinkHaveError: boolean | null;
   setIsLinkHaveError:(set:null|boolean)=>void
   notify:(message:string)=>void
+  setIsLinkValid:(url:string)=>void
 };
 
 const LinkUploadDialogBox = ({
@@ -30,6 +31,7 @@ const LinkUploadDialogBox = ({
   isLinkHaveError,
   setIsLinkHaveError,
   notify,
+  setIsLinkValid,
 }: LinkUploadDialogBoxProp) => {
 
 const checkLinkValidity = () => {
@@ -37,6 +39,9 @@ const checkLinkValidity = () => {
     notify(`Please provide a valid link to the channel ${linkOf}` )
 
     
+  }
+  else{
+    setIsLinkValid(link)
   }
 }
 
