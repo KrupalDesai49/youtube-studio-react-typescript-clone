@@ -11,7 +11,7 @@ const ProtectedRoute:React.FC<ProtectedRouteProps> = ({children}) => {
 const {user}:any = UserAuth()
 
 if(!user){
-    return <Navigate to='/' />
+    return <Navigate to='/signup' />
 }else{
     return <>{children}</>;
 }

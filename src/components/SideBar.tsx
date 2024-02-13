@@ -10,7 +10,7 @@ const SideBar = ({ open, setOpen }: any) => {
 
   const handleResize = () =>{
     setWindowWidth(window.innerWidth)
-    console.log(windowWidth)
+    // console.log(windowWidth)
    
   }
 
@@ -22,6 +22,7 @@ const SideBar = ({ open, setOpen }: any) => {
     } else {
       setOpen(false);
     }
+    console.log(user?.photoURL);
   
     return () => {
       window.removeEventListener("resize", handleResize)
