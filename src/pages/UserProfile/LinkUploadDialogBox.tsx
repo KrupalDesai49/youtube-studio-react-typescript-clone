@@ -18,7 +18,7 @@ type LinkUploadDialogBoxProp = {
   link: string;
   isLinkHaveError: boolean | null;
   setIsLinkHaveError:(set:null|boolean)=>void
-  notify:(message:string)=>null
+  notify:(message:string)=>void
 };
 
 const LinkUploadDialogBox = ({

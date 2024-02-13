@@ -306,7 +306,7 @@ const UserProfile = () => {
                 {user?.displayName &&
                   (user.photoURL ? (
                     <img
-                      src={user ? user?.photoURL : null}
+                      src={user ? (userData.logo_link!=="" ? userData.logo_link:user?.photoURL) : null}
                       alt=""
                       className={`h-24 w-24 shrink-0 rounded-full transition-all duration-200`}
                     />
@@ -367,7 +367,9 @@ const UserProfile = () => {
             <div className="flex w-full flex-col pt-3 md:flex-row ">
               {/* Logo */}
               <img
-                src={ch_banner}
+                // src={ch_banner}
+                src={ userData.banner_link!=="" ? userData.banner_link:ch_banner}
+
                 alt=""
                 className=" w-full max-w-96  md:w-72 "
               />
