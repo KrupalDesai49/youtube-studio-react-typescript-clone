@@ -21,10 +21,10 @@ interface VideoDetails {
 }
 type VideoUploadDetailsProp = {
   linkId: string;
-  successToast?:(message:string)=>void
+  // successToast?:(message:string)=>void
 };
 
-const VideoUploadDetails = ({ linkId, successToast }: VideoUploadDetailsProp) => {
+const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
   const apiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY;
   // const navigate = useNavigate();
 

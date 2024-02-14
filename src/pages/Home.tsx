@@ -1,11 +1,9 @@
-import content_img from "../assets/no_content_illustration_upload_video_v3_darkmode.svg";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { UserAuth } from "../components/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import content_img from "../assets/no_content_illustration_upload_video_v3_darkmode.svg";
+import { UserAuth } from "../components/AuthContext";
 import { selectedStatusAtom } from "../context/atom";
-import { User } from "firebase/auth";
 
 const Home = () => {
 

@@ -12,8 +12,8 @@
 
 
 
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 interface VideoDetails {
   title: string;

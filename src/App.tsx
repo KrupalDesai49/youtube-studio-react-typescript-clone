@@ -16,7 +16,6 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 import VideoUpload from "./pages/VideoUpload/VideoUpload";
 import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -32,19 +31,19 @@ function App() {
     setLinkId(id);
   };
 
-  const successToast = (messaage: string) => {
-    toast.success(messaage, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-    console.log("toastttttttttt")
-  };
+  // const successToast = (messaage: string) => {
+  //   toast.success(messaage, {
+  //     position: "bottom-right",
+  //     autoClose: 5000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: false,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "dark",
+  //   });
+  //   console.log("toastttttttttt")
+  // };
 
   return (
     <>
@@ -93,7 +92,7 @@ function App() {
                       // <ProtectedRoute>
                       <VideoUploadDetails
                         linkId={linkId}
-                        successToast={successToast}
+                        // successToast={successToast}
                       />
                       // </ProtectedRoute>
                     }
