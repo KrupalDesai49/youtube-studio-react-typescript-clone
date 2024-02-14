@@ -9,7 +9,8 @@ import { selectedStatusAtom } from "../../context/atom";
 import { db } from "../../context/firebase";
 
 
-import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserAuth } from "../../components/AuthContext";
 
@@ -26,7 +27,7 @@ type VideoUploadDetailsProp = {
 
 const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
   const apiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY;
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [videoTitle, setVideoTitle] = useState("");
   const [videoDescription, setVideoDescription] = useState("");
@@ -158,7 +159,7 @@ dislike:false,
         theme: "dark",
       });
 
-      // navigate('/')
+      navigate('/')
     } catch (error) {
       console.error(error);
     }
@@ -234,7 +235,6 @@ dislike:false,
         </div>
       </div>
       
-      <ToastContainer/>
 
     </>
   );

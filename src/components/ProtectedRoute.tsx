@@ -8,9 +8,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute:React.FC<ProtectedRouteProps> = ({children}) => {
+    
 const {user} = UserAuth()
-// const authContext = UserAuth();
-// const user: User |null = authContext?.user;
+
     
 if(!user  ){
     return <Navigate to='/signup' />

@@ -17,6 +17,7 @@ import VideoUpload from "./pages/VideoUpload/VideoUpload";
 import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   const [open, setOpen] = useState<boolean>(false);
@@ -108,10 +109,7 @@ function App() {
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
-              {/* <div className="z-[90000] absolute inset-0 mb-10">
                 <ToastContainer />
-                <h1 className="text-white">ddisxokwsn</h1>
-              </div> */}
             </div>
           </Router>
         </AuthContextProvider>

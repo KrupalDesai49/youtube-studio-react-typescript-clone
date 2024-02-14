@@ -8,7 +8,7 @@ import { UserAuth } from "../../components/AuthContext";
 import { selectedStatusAtom } from "../../context/atom";
 import { db } from "../../context/firebase";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type SelectedType = "Video" | "Short";
@@ -255,7 +255,7 @@ const VideoUpload = ({
           {/* Next Page Button Container */}
           <div className=" group mt-14 w-fit cursor-pointer">
             <div
-              onClick={handleClick}
+              onClick={()=>{handleClick()}}
               className="flex w-fit items-center rounded-md bg-[#ff0000] px-6 py-2  font-semibold"
             >
               <span>
@@ -272,7 +272,7 @@ const VideoUpload = ({
           </div>
         </div>
       </div>
-      <ToastContainer/>
+      {/* <ToastContainer/> */}
       </>
   );
 };
