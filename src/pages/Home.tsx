@@ -5,6 +5,7 @@ import { UserAuth } from "../components/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { selectedStatusAtom } from "../context/atom";
+import { User } from "firebase/auth";
 
 const Home = () => {
 
@@ -12,7 +13,10 @@ const Home = () => {
   const [, setSelectedStatus] = useAtom(selectedStatusAtom);
 
 
-  const { user }:any = UserAuth();
+  const { user } = UserAuth();
+  
+  // const authContext = UserAuth();
+  // const user: User | undefined = authContext?.user;
 
 useEffect(() => {
   

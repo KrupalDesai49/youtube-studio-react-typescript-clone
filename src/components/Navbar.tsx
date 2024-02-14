@@ -1,16 +1,19 @@
-import logo from "../assets/studio.svg";
-import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "./AuthContext";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import person from "../assets/person.svg";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import logo from "../assets/studio.svg";
+import { UserAuth } from "./AuthContext";
 
 interface NavbarProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ setOpen }) => {
-  const { user, logOut }: any = UserAuth();
+  const { user, logOut } = UserAuth();
+  // const authContext = UserAuth();
+  // const user: User |null = authContext?.user;
+  // const logOut: (() => Promise<void>) = authContext?.logOut;
+
+
   const navigate = useNavigate();
   // console.log(user)
   useParams();
@@ -102,7 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({ setOpen }) => {
           {user.photoURL ? (
             <div className=" mr-3 flex h-10  w-10 flex-col items-center justify-center">
               <img
-                src={user ? user.photoURL : null}
+                src={user ? user.photoURL : ''}
                 alt=""
                 className="rounded-full"
               />{" "}

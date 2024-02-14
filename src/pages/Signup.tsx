@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { Link , useNavigate} from "react-router-dom";
-import { UserAuth } from "../components/AuthContext";
-import login_bg from "../assets/login_bg.webp";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import google from "../assets/google.svg";
+import login_bg from "../assets/login_bg.webp";
+import { UserAuth } from "../components/AuthContext";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, signUp, googleSignIn } = UserAuth();
+  const { signUp, googleSignIn } = UserAuth() ;
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await signUp(email, password, username);
@@ -67,7 +67,7 @@ const Signup = () => {
                   className="my-2 rounded bg-gray-700 p-3"
                   type="password"
                   placeholder="Password"
-                  minLength="6" required 
+                  minLength={6} required 
 
                   autoComplete="current-password"
                 />

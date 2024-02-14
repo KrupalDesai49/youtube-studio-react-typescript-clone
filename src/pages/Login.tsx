@@ -8,8 +8,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { logIn, googleSignIn }: any = UserAuth();
   const navigate = useNavigate();
+  const { logIn, googleSignIn }  = UserAuth();
+  
+  // const authContext = UserAuth();
+  // // const user: User | undefined = authContext?.user;
+  // const logIn: (() => Promise<void>) | undefined = authContext?.logOut;
+  // const googleSignIn: (() => Promise<void>) | undefined = authContext?.logOut;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,9 +22,15 @@ const Login = () => {
     try {
       await logIn(email, password);
       navigate("/");
-    } catch (error: any) {
-      console.log(error);
-      setError(error.message);
+    } catch (error) {
+      // console.log(error);
+      // setError(error.message);
+      if (error instanceof Error) {
+        console.log(error);
+        setError(error.message);
+      } else {
+        console.log('An unexpected error occurred:', error);
+      }
     }
   };
 

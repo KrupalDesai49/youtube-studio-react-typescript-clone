@@ -1,22 +1,22 @@
+import { Theme } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
+import { useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { AuthContextProvider } from "./components/AuthContext";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
+import SideBar from "./components/SideBar";
+import Content from "./pages/Content";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Signup from "./pages/Signup";
-import SideBar from "./components/SideBar";
-import { useState } from "react";
-import VideoUpload from "./pages/VideoUpload/VideoUpload";
-import Content from "./pages/Content";
-import ProtectedRoute from "./components/ProtectedRoute";
-import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 import UserProfile from "./pages/UserProfile/UserProfile";
-import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
+import VideoUpload from "./pages/VideoUpload/VideoUpload";
+import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
       <Theme>
         <AuthContextProvider>
           <Router>
-            <div className="relative font-roboto relative flex h-screen flex-col bg-[#1f1f1f] text-white">
+            <div className="relative font-roboto flex h-screen flex-col bg-[#1f1f1f] text-white">
               <Navbar setOpen={setOpen} />
               <div className="relative flex flex-1 overflow-hidden">
                 <SideBar open={open} setOpen={setOpen} />

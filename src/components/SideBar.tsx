@@ -1,11 +1,20 @@
-import SideBarContent from "./SideBarContent";
-import { UserAuth } from "./AuthContext";
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { UserAuth } from "./AuthContext";
+import SideBarContent from "./SideBarContent";
 
-const SideBar = ({ open, setOpen }: any) => {
-  const { user }: any = UserAuth();
-  let Ids = useLocation();
+type SideBarProp ={
+  open :boolean
+  setOpen:(Value:boolean)=>void
+}
+
+
+const SideBar = ({ open, setOpen }: SideBarProp) => {
+  const { user } = UserAuth();
+  // const authContext = UserAuth();
+  // const user: User | undefined = authContext?.user;
+  
+  const Ids = useLocation();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   const handleResize = () =>{
@@ -51,7 +60,7 @@ const SideBar = ({ open, setOpen }: any) => {
         {user?.displayName &&
           (user.photoURL ? (
             <img
-              src={user ? user?.photoURL : null}
+              src={user ? user?.photoURL : ''}
               alt=""
               className={`rounded-full transition-all duration-200 ${open ? "mb-2 h-24 w-24" : "mb-0 h-8 w-8"}`}
             />

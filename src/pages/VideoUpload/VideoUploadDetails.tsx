@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import arrow from "../../assets/right_arrow.svg"
+import arrow from "../../assets/right_arrow.svg";
 
 import axios from "axios";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import { db } from "../../context/firebase";
-import { selectedStatusAtom } from "../../context/atom";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { useAtom } from "jotai";
+import { selectedStatusAtom } from "../../context/atom";
+import { db } from "../../context/firebase";
 
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { User } from "firebase/auth";
 import { UserAuth } from "../../components/AuthContext";
 
 interface VideoDetails {
@@ -23,19 +21,19 @@ interface VideoDetails {
 }
 type VideoUploadDetailsProp = {
   linkId: string;
-  successToast:(message:string)=>void
+  successToast?:(message:string)=>void
 };
 
 const VideoUploadDetails = ({ linkId, successToast }: VideoUploadDetailsProp) => {
   const apiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [videoTitle, setVideoTitle] = useState("");
   const [videoDescription, setVideoDescription] = useState("");
   const [videoDetails, setVideoDetails] = useState<VideoDetails >({} as VideoDetails);
 
   const [, setSelectedStatus] = useAtom(selectedStatusAtom);
-  const { user }: User |undefined  = UserAuth();
+  const { user }  = UserAuth();
 
 
 
@@ -123,7 +121,7 @@ thumbnail:videoDetails.thumbnails,
 title:videoTitle,
 duration:videoDetails.duration,
 description:videoDescription,
-channel_email:user.email,
+channel_email:user?.email,
 subscribe:0,
 view:0,
 likes_count:0,
@@ -135,7 +133,7 @@ dislike:false,
       };
   
 
-      const docRef = doc(collection(db, "user", user.email, "video"), linkId);
+      const docRef = doc(collection(db, "user", user?.email as string, "video"), linkId);
       const docRef2 = doc(collection(db, "video"), linkId);
 
 

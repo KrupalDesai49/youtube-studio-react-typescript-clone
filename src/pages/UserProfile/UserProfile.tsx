@@ -1,22 +1,18 @@
-import arrow from "../../assets/right_arrow.svg";
-import ch_banner from "../../assets/ch_banner.png";
-import { UserAuth } from "../../components/AuthContext";
-import { useEffect, useState } from "react";
 import {
-  collection,
   doc,
   getDoc,
-  onSnapshot,
-  query,
-  updateDoc,
+  updateDoc
 } from "firebase/firestore";
-import { db } from "../../context/firebase";
-import LinkUploadDialogBox from "./LinkUploadDialogBox";
+import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { User } from "firebase/auth";
-import { useAtom } from "jotai";
+import ch_banner from "../../assets/ch_banner.png";
+import arrow from "../../assets/right_arrow.svg";
+import { UserAuth } from "../../components/AuthContext";
 import { selectedStatusAtom } from "../../context/atom";
+import { db } from "../../context/firebase";
+import LinkUploadDialogBox from "./LinkUploadDialogBox";
 
 type UserDataType = {
   id: string;
@@ -33,7 +29,7 @@ type UserDataType = {
 
 const UserProfile = () => {
 
-  const { user }: User |undefined  = UserAuth();
+  const { user }  = UserAuth();
   const [, setSelectedStatus] = useAtom(selectedStatusAtom);
   
   const [userData, setUserData] = useState<UserDataType>({} as UserDataType);
@@ -114,7 +110,8 @@ const UserProfile = () => {
   const publishChannelProfile = async () => {
     try {
       if (isDataUpdated) {
-        await updateDoc(doc(db, "user", user.email), {
+        
+        await updateDoc(doc(db, "user", user?.email as string), {
           displayName: channelName,
           description: channelDescription,
           tick: isChannelHaveTick,
@@ -310,7 +307,7 @@ const UserProfile = () => {
                 {user?.displayName &&
                   (user.photoURL ? (
                     <img
-                      src={user ?isLogoLinkValid!==""?isLogoLinkValid:(userData.logo_link!=="" ? userData.logo_link:user?.photoURL) : null}
+                      src={user ?isLogoLinkValid!==""?isLogoLinkValid:(userData.logo_link!=="" ? userData.logo_link:user?.photoURL) : ''}
                       alt=""
                       className={`h-24 w-24 shrink-0 rounded-full transition-all duration-200`}
                     />
@@ -378,7 +375,7 @@ const UserProfile = () => {
 
                 alt=""
                 className=" w-full max-w-96  md:w-72 "
-              />
+              />  
 
               {/* Logo Edit Button */}
               <div className=" flex flex-col space-y-1.5  md:ml-5">

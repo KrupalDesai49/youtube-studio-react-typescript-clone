@@ -149,5 +149,12 @@ async function logIn(email: string, password: string): Promise<void> {
 }
 
 export function UserAuth() {
-  return useContext(AuthContext);
+  // return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (context === undefined) {
+    throw new Error("useAuth must be used within a AuthProvider");
+  }
+
+  return context;
 }

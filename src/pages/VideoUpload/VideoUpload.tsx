@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import arrow from "../../assets/right_arrow.svg";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { useAtom } from "jotai";
-import { selectedStatusAtom } from "../../context/atom";
-import {  collection, doc, setDoc } from "firebase/firestore";
-import { db } from "../../context/firebase";
+import arrow from "../../assets/right_arrow.svg";
 import { UserAuth } from "../../components/AuthContext";
-import { User } from "firebase/auth";
+import { selectedStatusAtom } from "../../context/atom";
+import { db } from "../../context/firebase";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -43,7 +42,9 @@ const VideoUpload = ({
   );
 
   const [, setSelectedStatus] = useAtom(selectedStatusAtom);
-  const { user }: User |undefined  = UserAuth();
+  const { user }  = UserAuth();
+//   const authContext = UserAuth();
+// const user = authContext?.user;
 
 
   useEffect(() => {
@@ -101,7 +102,7 @@ const VideoUpload = ({
       };
   
 
-      const docRef = doc(collection(db, "user", user.email, "short"), linkId);
+      const docRef = doc(collection(db, "user", user?.email as string, "short"), linkId);
       const docRef2 = doc(collection(db, "short"), linkId);
 
 
@@ -134,7 +135,7 @@ const VideoUpload = ({
 
   function extractYouTubeVideoId(url: string): string | null {
     const regExp =
-      /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+      /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/
     const match = url.match(regExp);
     console.log(match && match[1].length === 11 ? match[1] : null);
     return match && match[1].length === 11 ? match[1] : null;
