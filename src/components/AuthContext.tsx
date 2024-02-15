@@ -55,6 +55,7 @@ const googleSignIn = async () => {
             description: '',
             logo_link: '',
             banner_link: '',
+            photoURL: user?.photoURL,
             channelID:
               "@" +
               user.displayName
@@ -92,6 +93,7 @@ async function signUp(email: string, password: string, displayName: string): Pro
         description: '',
         logo_link: '',
         banner_link: '',
+        photoURL:'',
         channelID:
           "@" +
           displayName

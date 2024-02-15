@@ -16,8 +16,8 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 import VideoUpload from "./pages/VideoUpload/VideoUpload";
 import VideoUploadDetails from "./pages/VideoUpload/VideoUploadDetails";
 
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   const [open, setOpen] = useState<boolean>(false);
@@ -32,19 +32,6 @@ function App() {
     setLinkId(id);
   };
 
-  // const successToast = (messaage: string) => {
-  //   toast.success(messaage, {
-  //     position: "bottom-right",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: false,
-  //     draggable: true,
-  //     progress: undefined,
-  //     theme: "dark",
-  //   });
-  //   console.log("toastttttttttt")
-  // };
 
   return (
     <>
