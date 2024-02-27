@@ -8,7 +8,6 @@ import { useAtom } from "jotai";
 import { selectedStatusAtom } from "../../context/atom";
 import { db } from "../../context/firebase";
 
-
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,17 +30,15 @@ const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
 
   const [videoTitle, setVideoTitle] = useState("");
   const [videoDescription, setVideoDescription] = useState("");
-  const [videoDetails, setVideoDetails] = useState<VideoDetails >({} as VideoDetails);
+  const [videoDetails, setVideoDetails] = useState<VideoDetails>(
+    {} as VideoDetails,
+  );
 
   const [, setSelectedStatus] = useAtom(selectedStatusAtom);
-  const { user }  = UserAuth();
-
-
-
-
+  const { user } = UserAuth();
 
   useEffect(() => {
-    setSelectedStatus('p3')
+    setSelectedStatus("p3");
 
     const fetchVideoDetails = async () => {
       try {
@@ -94,6 +91,10 @@ const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
       }
       if (matches[3]) {
         duration += `${parseInt(matches[3], 10) < 10 ? "0" + parseInt(matches[3], 10) : parseInt(matches[3], 10)}`;
+      } else {
+        if (matches[1] || matches[2]) {
+          duration += `00`;
+        }
       }
     }
 
@@ -115,37 +116,30 @@ const VideoUploadDetails = ({ linkId }: VideoUploadDetailsProp) => {
 
   const publishYouTubeVideo = async () => {
     try {
-
       const shortData = {
-        
-thumbnail:videoDetails.thumbnails,
-title:videoTitle,
-duration:videoDetails.duration,
-description:videoDescription,
-channel_email:user?.email,
-subscribe:0,
-view:0,
-likes_count:0,
-like:false,
-dislike:false,
+        thumbnail: videoDetails.thumbnails,
+        title: videoTitle,
+        duration: videoDetails.duration,
+        description: videoDescription,
+        channel_email: user?.email,
+        subscribe: 0,
+        view: 0,
+        likes_count: 0,
+        like: false,
+        dislike: false,
 
         VideoID: linkId,
         timestamp: Date.now(),
       };
-  
 
-      const docRef = doc(collection(db, "user", user?.email as string, "video"), linkId);
+      const docRef = doc(
+        collection(db, "user", user?.email as string, "video"),
+        linkId,
+      );
       const docRef2 = doc(collection(db, "video"), linkId);
 
-
-      await setDoc(
-        docRef,
-        shortData,
-      );
-      await setDoc(
-        docRef2,
-        shortData,
-      );
+      await setDoc(docRef, shortData);
+      await setDoc(docRef2, shortData);
 
       // successToast("Given Youtube Video has been Successfully Publish.")
       toast.success("Given Youtube Video has been Successfully Publish.", {
@@ -159,25 +153,23 @@ dislike:false,
         theme: "dark",
       });
 
-      navigate('/')
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  const handleUploadVideo = async () =>{
-
-    try{
+  const handleUploadVideo = async () => {
+    try {
       // await addDoc(
       //   collection(db, "ytvideo2" ),
       //   videoDetails,
       // );
-      publishYouTubeVideo()
-
-    }catch (e){
-      console.log("Upload Video Data Error!!",e)
+      publishYouTubeVideo();
+    } catch (e) {
+      console.log("Upload Video Data Error!!", e);
     }
-  }
+  };
 
   return (
     <>
@@ -187,7 +179,6 @@ dislike:false,
 
         {/* Video Detail container */}
         <div className="pt-12">
-
           {/* Title */}
           <div className="flex flex-col ">
             <p className="text-lg font-[500]">Title</p>
@@ -227,15 +218,15 @@ dislike:false,
               className="flex w-fit items-center rounded-md bg-[#ff0000] px-6 py-2  font-semibold"
             >
               <span>Upload Youtube Video</span>
-              <img src={arrow} alt=""  className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"/>
+              <img
+                src={arrow}
+                alt=""
+                className="ml-2.5 mt-[0.2rem] w-3.5 transition duration-300 group-hover:rotate-180"
+              />
             </div>
           </div>
-
-          
         </div>
       </div>
-      
-
     </>
   );
 };
